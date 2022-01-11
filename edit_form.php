@@ -44,6 +44,14 @@ class block_dashboardchart_edit_form extends block_edit_form
         $mform->setType('config_msg', PARAM_RAW);
 
 
+        // graph tyoe
+        $graph_position = array();
+        $graph_position['horizontal'] = get_string('horizontal', 'block_dashboardchart');
+        $graph_position['vertical'] = get_string('vertical', 'block_dashboardchart');
+        $graph_position['pie'] = get_string('pie', 'block_dashboardchart');
+        $graph_position['line'] = get_string('line', 'block_dashboardchart');
+        $mform->addElement('select', 'config_graphtype', get_string('graphtype', 'block_dashboardchart'), $graph_position);
+        $mform->setDefault('config_graphtype', 'vertical');
         // A sample string variable with a default value.
 
         $dashboardcharttype = array();
@@ -52,8 +60,13 @@ class block_dashboardchart_edit_form extends block_edit_form
         $dashboardcharttype["enrollment"] = get_string('dashboardcharttype:enrollment', 'block_dashboardchart');
         $dashboardcharttype["discussionpost"] = get_string('dashboardcharttype:discussionpost', 'block_dashboardchart');
         $dashboardcharttype["quizdashboardchart"] = get_string('dashboardcharttype:quizdashboardchart', 'block_dashboardchart');
-        $mform->addElement('select', 'config_dashboardcharttype', get_string('dashboardcharttype', 'block_dashboardchart'),
-            $dashboardcharttype, ['id' => 'id_config_dashboardcharttype']);
+        $mform->addElement(
+            'select',
+            'config_dashboardcharttype',
+            get_string('dashboardcharttype', 'block_dashboardchart'),
+            $dashboardcharttype,
+            ['id' => 'id_config_dashboardcharttype']
+        );
 
 
         $datalimitoptions = array();
@@ -63,8 +76,12 @@ class block_dashboardchart_edit_form extends block_edit_form
         $datalimitoptions[20] = get_string('datalimitoption:top20', 'block_dashboardchart');
         $datalimitoptions[1] = get_string('datalimitoption:all', 'block_dashboardchart');
 
-        $mform->addElement('select', 'config_datalimit',
-            get_string('datalimitlabel', 'block_dashboardchart'), $datalimitoptions);
+        $mform->addElement(
+            'select',
+            'config_datalimit',
+            get_string('datalimitlabel', 'block_dashboardchart'),
+            $datalimitoptions
+        );
 
         $mform->addElement('header', 'config_styleheader', 'Custom CSS style variables');
 
@@ -111,7 +128,5 @@ class block_dashboardchart_edit_form extends block_edit_form
         $mform->addElement('text', 'config_cellspacing', 'Table Cell Spacing:');
         $mform->setDefault('config_cellspacing', '');
         $mform->setType('config_cellspacing', PARAM_RAW);
-
-
     }
 }

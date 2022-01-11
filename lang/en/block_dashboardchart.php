@@ -41,3 +41,12 @@ $string['dashboardcharttype:coursewiseenrollment'] = 'Enrolment in each Course';
 $string['dashboardcharttype:enrollment'] = 'Enrollment Leaderboard';
 $string['dashboardcharttype:discussionpost'] = 'Forum Discussion Leaderboard';
 $string['dashboardcharttype:quizdashboardchart'] = 'Quiz Leaderboard';
+
+
+$string['leaderboardtypewarning'] = 'Something wrong';
+
+$string['horizontal'] = 'Horizontal';
+$string['pie'] = 'Pie Chart';
+$string['line'] = 'Line Chart';
+$string['vertical'] = 'Vertical';
+$string['graphtype'] = 'Select preferred Graph type:';
