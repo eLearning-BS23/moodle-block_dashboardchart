@@ -38,15 +38,19 @@ $string['datalimitoption:all'] = 'All';
 $string['dashboardcharttype'] = 'Chose Chart Value';
 $string['dashboardcharttype:select'] = 'Select';
 $string['dashboardcharttype:coursewiseenrollment'] = 'Enrolment in each Course';
-$string['dashboardcharttype:enrollment'] = 'Enrollment Leaderboard';
+$string['dashboardcharttype:enrollment'] = 'Enrollment by Country';
 $string['dashboardcharttype:discussionpost'] = 'Forum Discussion Leaderboard';
-$string['dashboardcharttype:quizdashboardchart'] = 'Quiz Leaderboard';
+$string['dashboardcharttype:category'] = 'Courses in category';
+$string['dashboardcharttype:login'] = 'Logins per month';
+$string['dashboardcharttype:grades'] = 'Average grade';
+$string['dashboardcharttype:active_courses'] = 'Most Active courses';
+$string['dashboardcharttype:learner_teacher'] = 'Learners and teachers enrolled per category';
 
 
 $string['leaderboardtypewarning'] = 'Something wrong';
 
-$string['horizontal'] = 'Horizontal';
+$string['horizontal'] = 'Horizontal Bar';
 $string['pie'] = 'Pie Chart';
 $string['line'] = 'Line Chart';
-$string['vertical'] = 'Vertical';
+$string['vertical'] = 'Vertical Bar';
 $string['graphtype'] = 'Select preferred Graph type:';

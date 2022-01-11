@@ -57,9 +57,12 @@ class block_dashboardchart_edit_form extends block_edit_form
         $dashboardcharttype = array();
         $dashboardcharttype[""] = get_string('dashboardcharttype:select', 'block_dashboardchart');
         $dashboardcharttype["coursewiseenrollment"] = get_string('dashboardcharttype:coursewiseenrollment', 'block_dashboardchart');
-        $dashboardcharttype["enrollment"] = get_string('dashboardcharttype:enrollment', 'block_dashboardchart');
-        $dashboardcharttype["discussionpost"] = get_string('dashboardcharttype:discussionpost', 'block_dashboardchart');
-        $dashboardcharttype["quizdashboardchart"] = get_string('dashboardcharttype:quizdashboardchart', 'block_dashboardchart');
+        $dashboardcharttype["enrollmentbyCountry"] = get_string('dashboardcharttype:enrollment', 'block_dashboardchart');
+        $dashboardcharttype["category"] = get_string('dashboardcharttype:category', 'block_dashboardchart');
+        $dashboardcharttype["login"] = get_string('dashboardcharttype:login', 'block_dashboardchart');
+        $dashboardcharttype["grades"] = get_string('dashboardcharttype:grades', 'block_dashboardchart');
+        $dashboardcharttype["active_courses"] = get_string('dashboardcharttype:active_courses', 'block_dashboardchart');
+        $dashboardcharttype["learner_teacher"] = get_string('dashboardcharttype:learner_teacher', 'block_dashboardchart');
         $mform->addElement(
             'select',
             'config_dashboardcharttype',
