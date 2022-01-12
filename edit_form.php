@@ -35,12 +35,13 @@ class block_dashboardchart_edit_form extends block_edit_form
     {
         global $DB, $PAGE;
 
+        $PAGE->requires->js_call_amd('block_dashboardchart/configure_block', 'init', array());
         // Section header title according to language file.
         $mform->addElement('header', 'config_header', get_string('blocksettings', 'block'));
 
         // A sample string variable with a default value.
         $mform->addElement('text', 'config_msg', get_string('blockstring', 'block_dashboardchart'));
-        $mform->setDefault('config_msg', 'test msg');
+        $mform->setDefault('config_msg', get_string('pluginname', 'block_dashboardchart'));
         $mform->setType('config_msg', PARAM_RAW);
 
 
@@ -62,7 +63,6 @@ class block_dashboardchart_edit_form extends block_edit_form
         $dashboardcharttype["login"] = get_string('dashboardcharttype:login', 'block_dashboardchart');
         $dashboardcharttype["grades"] = get_string('dashboardcharttype:grades', 'block_dashboardchart');
         $dashboardcharttype["active_courses"] = get_string('dashboardcharttype:active_courses', 'block_dashboardchart');
-        $dashboardcharttype["learner_teacher"] = get_string('dashboardcharttype:learner_teacher', 'block_dashboardchart');
         $mform->addElement(
             'select',
             'config_dashboardcharttype',
@@ -71,6 +71,16 @@ class block_dashboardchart_edit_form extends block_edit_form
             ['id' => 'id_config_dashboardcharttype']
         );
 
+        $coursesql = "SELECT * FROM {course} WHERE format != 'site'";
+        $coursedata = $DB->get_records_sql($coursesql);
+        $coursearray = array();
+        foreach ($coursedata as $row) {
+            $coursearray[$row->id] = $row->fullname;
+        }
+
+        $mform->addElement('html', '<div id="courseleaderboard_configs" style="display: none">');
+        $mform->addElement('select', 'config_courseid', get_string('config:courseselect', 'block_customleaderboard'), $coursearray);
+        $mform->addElement('html', '</div>');
 
         $datalimitoptions = array();
         $datalimitoptions[""] = get_string('dashboardcharttype:select', 'block_dashboardchart');
@@ -85,6 +95,7 @@ class block_dashboardchart_edit_form extends block_edit_form
             get_string('datalimitlabel', 'block_dashboardchart'),
             $datalimitoptions
         );
+        $mform->setDefault('config_datalimit', '');
 
         $mform->addElement('header', 'config_styleheader', 'Custom CSS style variables');
 

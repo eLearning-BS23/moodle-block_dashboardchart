@@ -52,25 +52,26 @@ class block_dashboardchart extends block_base
      */
     public function make_custom_content()
     {
-
+        $datalimit = $this->config->datalimit;
+        $datalimit = $this->return_data_limit($datalimit);
         if (isset($this->config->dashboardcharttype)) {
             if ($this->config->dashboardcharttype == 'coursewiseenrollment') {
-                return $this->make_course_student_table();
+                return $this->make_course_student_table($datalimit);
             } else if ($this->config->dashboardcharttype == 'category') {
-                return $this->make_category_course_table();
+                return $this->make_category_course_table($datalimit);
             } else if ($this->config->dashboardcharttype == 'login') {
-                return $this->make_login_table();
+                return $this->make_login_table($datalimit);
             } else if ($this->config->dashboardcharttype == 'grades') {
-                return $this->make_course_grade_table();
+                return $this->make_course_grade_table($datalimit);
             } else if ($this->config->dashboardcharttype == 'active_courses') {
-                return $this->make_most_active_courses_table();
+                return $this->make_most_active_courses_table($datalimit);
             } else if ($this->config->dashboardcharttype == 'learner_teacher') {
-                return $this->make_learnervTeacher_table();
+                return $this->make_learnervTeacher_table($datalimit);
             } else {
-                return $this->make_enrollment_table();
+                return $this->make_enrollment_table($datalimit);
             }
         } else {
-            return $this->make_enrollment_table();
+            return $this->make_enrollment_table($datalimit);
         }
     }
 
@@ -79,10 +80,10 @@ class block_dashboardchart extends block_base
      *
      * @return String
      */
-    public function make_enrollment_table()
+    public function make_enrollment_table($datalimit)
     {
         global $DB;
-        $sql = "SELECT country, COUNT(country) as newusers FROM {user} GROUP BY country ORDER BY country";
+        $sql = "SELECT country, COUNT(country) as newusers FROM {user} GROUP BY country ORDER BY country" . $datalimit;
         $rows = $DB->get_records_sql($sql);
         $series = [];
         $labels = [];
@@ -96,52 +97,33 @@ class block_dashboardchart extends block_base
         return $this->display_graph($series, $labels, "Student Enrolled by contries", "Country name");
     }
 
-    public function make_course_grade_table()
+    public function make_most_active_courses_table($datalimit)
     {
         global $DB;
-        $sql = "SELECT 
-        u.username, 
-        c.shortname AS 'Course',
-        ROUND(gg.finalgrade,2) AS 'Grade',
-        DATE_FORMAT(FROM_UNIXTIME(gg.timemodified), '%Y-%m-%d') AS 'Date'
-        
-        FROM {course} AS c
-        JOIN {context} AS ctx ON c.id = ctx.instanceid
-        JOIN {role_assignments} AS ra ON ra.contextid = ctx.id
-        JOIN {user} AS u ON u.id = ra.userid
-        JOIN {grade_grades} AS gg ON gg.userid = u.id
-        JOIN {grade_items} AS gi ON gi.id = gg.itemid
-        WHERE gi.courseid = c.id 
-        AND gi.itemtype = 'course'
-        # students only role id is 5
-        AND ra.roleid = 5
-        ORDER BY u.username, c.shortname";
+        $sql = "SELECT c.fullname,count(l.userid) AS Views
+        FROM moodle.mdl_logstore_standard_log l, moodle.mdl_user u, moodle.mdl_role_assignments r, moodle.mdl_course c, moodle.mdl_context ct
+        WHERE l.courseid=6
+        AND l.userid = u.id
+        AND r.roleid=5
+        AND r.userid = u.id
+        AND ct.contextlevel=50
+        and l.courseid=ct.instanceid
+        group by c.fullname
+        order by count(l.userid) desc";
 
         $datas = $DB->get_records_sql($sql);
 
-        //die(var_dump($datas));
+        $series = [];
+        $labels = [];
+
+        foreach ($datas as $data) {
+            $series[] = $data->views;
+            $labels[] = $data->fullname;
+        }
+        return $this->display_graph($series, $labels, "Most active course", "Course name");
     }
 
-    public function make_most_active_courses_table()
-    {
-        global $DB;
-        $sql = "SELECT count(l.userid) AS Views
-            FROM {logstore_standard_log} l, {user} u, {role_assignments} r
-            WHERE l.courseid=0
-            AND l.userid = u.id
-            AND r.contextid= (
-                SELECT id
-                FROM mdl_context
-                WHERE contextlevel=50 AND instanceid=l.courseid
-            )
-            AND r.roleid=5
-            AND r.userid = u.id";
-
-        $datas = $DB->get_records_sql($sql);
-        //die(var_dump($datas));
-    }
-
-    public function make_learnervTeacher_table()
+    public function make_learnervTeacher_table($datalimit)
     {
         global $DB;
         $sql = "SELECT COUNT(DISTINCT lra.userid) AS learners, COUNT(DISTINCT tra.userid) as teachers
@@ -151,13 +133,13 @@ class block_dashboardchart extends block_base
             JOIN {role_assignments}  AS tra ON tra.contextid = ctx.id JOIN {course_categories} AS cats ON c.category = cats.id
             WHERE c.category = cats.id
             AND lra.roleid=5
-            AND tra.roleid=3";
+            AND tra.roleid=3" . $datalimit;
 
         $datas = $DB->get_records_sql($sql);
         //die(var_dump($datas));
     }
 
-    public function make_login_table()
+    public function make_login_table($datalimit)
     {
         global $DB;
         $sql = "SELECT
@@ -165,7 +147,7 @@ class block_dashboardchart extends block_base
         DATE_FORMAT(FROM_UNIXTIME(l.timecreated), '%M') AS 'Month'
         FROM {logstore_standard_log} l
         WHERE l.action = 'loggedin' 
-        GROUP BY MONTH(FROM_UNIXTIME(l.timecreated))";
+        GROUP BY MONTH(FROM_UNIXTIME(l.timecreated))" . $datalimit;
 
         $datas = $DB->get_records_sql($sql);
 
@@ -180,11 +162,11 @@ class block_dashboardchart extends block_base
         return $this->display_graph($series, $labels, "user log ins in past months", "Month name");
     }
 
-    public function make_category_course_table()
+    public function make_category_course_table($datalimit)
     {
         global $DB;
         $sql = "SELECT {course_categories}.name, {course_categories}.coursecount
-        FROM {course_categories}";
+        FROM {course_categories}" . $datalimit;
         $datas = $DB->get_records_sql($sql);
 
         $series = [];
@@ -199,7 +181,7 @@ class block_dashboardchart extends block_base
     }
 
 
-    public function make_course_student_table()
+    public function make_course_student_table($datalimit)
     {
         global $DB;
         $sql = "SELECT c.fullname AS 'course',COUNT(u.username) AS 'users'
@@ -209,7 +191,7 @@ class block_dashboardchart extends block_base
         JOIN {context} AS ctx on r.contextid = ctx.id
         JOIN {course} AS c on ctx.instanceid = c.id
         WHERE rn.shortname = 'student'
-        GROUP BY c.fullname, rn.shortname";
+        GROUP BY c.fullname, rn.shortname" . $datalimit;
 
         $datas = $DB->get_records_sql($sql);
 
@@ -224,12 +206,64 @@ class block_dashboardchart extends block_base
         return $this->display_graph($series, $labels, "Student per course", "Course name");
     }
 
-    public function display_graph($series, $labels, $title, $labelx)
+    public function make_course_grade_table($datalimit)
+    {
+        global $DB, $USER, $OUTPUT, $CFG;
+
+        $courseid = $this->config->courseid;
+        $userid = $USER->id;
+        $sql = " SELECT round(gg.rawgrade,2) as grade, gi.itemname from moodle.mdl_grade_grades as gg
+        join moodle.mdl_grade_items as gi on gi.courseid={$courseid}
+        where gg.itemid=gi.id and
+        gg.userid={$userid} and (gg.rawgrade) is not null" . $datalimit;
+
+        $datas = $DB->get_records_sql($sql);
+
+        $series = [];
+        $labels = [];
+
+        foreach ($datas as $data) {
+            $series[] = $data->grade;
+        }
+
+        $sql = "SELECT round(avg(gg.rawgrade),2) as grade, gi.itemname from moodle.mdl_grade_grades as gg
+                    join moodle.mdl_grade_items as gi on gi.courseid={$courseid}
+                    where gg.itemid=gi.id and (gg.rawgrade) is not null
+                    group by gi.itemname 
+                    " . $datalimit;
+
+        $datas = $DB->get_records_sql($sql);
+
+        $newseries = [];
+
+        foreach ($datas as $data) {
+            $newseries[] = $data->grade;
+            $labels[] = $data->itemname;
+        }
+        while (count($series) < count($newseries)) {
+            $series[] = 0;
+        }
+
+        $chart = new \core\chart_bar();
+        $series2 = new \core\chart_series('avg grade', $newseries);
+        $series2->set_type(\core\chart_series::TYPE_LINE);
+
+
+        $chart->set_labels($labels);
+        $chart->add_series($series2);
+        $series = new \core\chart_series("user grade", $series);
+        $chart->add_series($series);
+        $CFG->chart_colorset = ['#001f3f', '#0f6cbf'];
+
+        return $OUTPUT->render($chart);
+    }
+
+    public function display_graph($seriesvalue, $labels, $title, $labelx)
     {
         global $OUTPUT, $CFG;
 
         $chart = new \core\chart_bar();
-        $series = new \core\chart_series($title, $series);
+        $series = new \core\chart_series($title, $seriesvalue);
 
         if (isset($this->config->graphtype)) {
             if ($this->config->graphtype == "horizontal") {
@@ -243,12 +277,28 @@ class block_dashboardchart extends block_base
         }
 
         //$CFG->chart_colorset = ['#001f3f'];
-
-        $chart->add_series($series);
         $chart->set_labels($labels);
+        $chart->add_series($series);
         $yaxis = $chart->get_yaxis(0, true);
         $yaxis->set_min(0);
         $chart->get_xaxis(0, true)->set_label($labelx);
         return $OUTPUT->render($chart);
+    }
+
+    public function return_data_limit($datalimit)
+    {
+        $limit = (int) $datalimit;
+        switch ($limit) {
+            case 1:
+                return "";
+            case 5:
+                return " LIMIT 5 ";
+            case 10:
+                return " LIMIT 10 ";
+            case 20:
+                return " LIMIT 20 ";
+            default:
+                return " LIMIT 10 ";
+        }
     }
 }
