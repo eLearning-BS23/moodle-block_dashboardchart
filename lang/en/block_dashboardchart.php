@@ -35,14 +35,14 @@ $string['datalimitoption:top20'] = 'Top 20';
 $string['datalimitoption:all'] = 'All';
 
 
-$string['dashboardcharttype'] = 'Chose Chart Value';
+$string['dashboardcharttype'] = 'Choose Chart Value';
 $string['dashboardcharttype:select'] = 'Select';
 $string['dashboardcharttype:coursewiseenrollment'] = 'Enrolment in each Course';
 $string['dashboardcharttype:enrollment'] = 'Enrollment by Country';
 $string['dashboardcharttype:discussionpost'] = 'Forum Discussion Leaderboard';
 $string['dashboardcharttype:category'] = 'Courses in category';
-$string['dashboardcharttype:login'] = 'Logins per month';
-$string['dashboardcharttype:grades'] = 'Average grade';
+$string['dashboardcharttype:login'] = 'Logins per day';
+$string['dashboardcharttype:grades'] = 'Show grade';
 $string['dashboardcharttype:active_courses'] = 'Most Active courses';
 $string['dashboardcharttype:learner_teacher'] = 'Learners and teachers enrolled per category';
 

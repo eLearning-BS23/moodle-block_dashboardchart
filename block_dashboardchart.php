@@ -101,7 +101,7 @@ class block_dashboardchart extends block_base
     {
         global $DB;
         $sql = "SELECT c.fullname,count(l.userid) AS Views
-        FROM moodle.mdl_logstore_standard_log l, moodle.mdl_user u, moodle.mdl_role_assignments r, moodle.mdl_course c, moodle.mdl_context ct
+        FROM {logstore_standard_log} l, {user} u, {role_assignments} r, {course} c, {context} ct
         WHERE l.courseid=6
         AND l.userid = u.id
         AND r.roleid=5
@@ -142,12 +142,10 @@ class block_dashboardchart extends block_base
     public function make_login_table($datalimit)
     {
         global $DB;
-        $sql = "SELECT
-        COUNT( l.userid) AS 'DistinctUserLogins',
-        DATE_FORMAT(FROM_UNIXTIME(l.timecreated), '%M') AS 'Month'
-        FROM {logstore_standard_log} l
-        WHERE l.action = 'loggedin' 
-        GROUP BY MONTH(FROM_UNIXTIME(l.timecreated))" . $datalimit;
+        $sql = "SELECT date(from_unixtime(lg.timecreated)) as date,count(distinct lg.userid) as logins FROM {logstore_standard_log} as lg
+        group by date(from_unixtime(lg.timecreated)) 
+        order by date(from_unixtime(lg.timecreated)) desc
+        " . $datalimit;
 
         $datas = $DB->get_records_sql($sql);
 
@@ -155,11 +153,11 @@ class block_dashboardchart extends block_base
         $labels = [];
 
         foreach ($datas as $data) {
-            $series[] = $data->distinctuserlogins;
-            $labels[] = $data->month;
+            $series[] = $data->logins;
+            $labels[] = $data->date;
         }
 
-        return $this->display_graph($series, $labels, "user log ins in past months", "Month name");
+        return $this->display_graph($series, $labels, "users log ins", "Date");
     }
 
     public function make_category_course_table($datalimit)
@@ -230,36 +228,24 @@ class block_dashboardchart extends block_base
             $series[] = $data->grade;
         }
 
-        $sql = "SELECT round(avg(gg.rawgrade),2) as grade, gi.itemname from moodle.mdl_grade_grades as gg
-                    join moodle.mdl_grade_items as gi on gi.courseid={$courseid}
-                    where gg.itemid=gi.id and (gg.rawgrade) is not null
-                    group by gi.itemname 
+        $sql = "SELECT itemname FROM {grade_items} 
+        where courseid={$courseid} and itemname is not null
                     " . $datalimit;
 
         $datas = $DB->get_records_sql($sql);
 
-        $newseries = [];
+
 
         foreach ($datas as $data) {
-            $newseries[] = $data->grade;
             $labels[] = $data->itemname;
         }
-        while (count($series) < count($newseries)) {
+        while (count($series) < count($labels)) {
             $series[] = 0;
         }
 
-        $chart = new \core\chart_bar();
-        $series2 = new \core\chart_series('avg grade', $newseries);
-        $series2->set_type(\core\chart_series::TYPE_LINE);
-
-
-        $chart->set_labels($labels);
-        $chart->add_series($series2);
-        $series = new \core\chart_series("user grade", $series);
-        $chart->add_series($series);
-        $CFG->chart_colorset = ['#0f6cbf', '#001f3f'];
-
-        return $OUTPUT->render($chart);
+        $sql = "SELECT fullname FROM {course} where id={$courseid}";
+        $coursename = $DB->get_record_sql($sql);
+        return $this->display_graph($series, $labels, "Earned grades", $coursename->fullname);
     }
 
     public function display_graph($seriesvalue, $labels, $title, $labelx)
@@ -280,7 +266,6 @@ class block_dashboardchart extends block_base
                 $chart = new \core\chart_line();
                 $chart->set_smooth(true);
             } else {
-
                 $CFG->chart_colorset = ['#0f6cbf'];
             }
         }
