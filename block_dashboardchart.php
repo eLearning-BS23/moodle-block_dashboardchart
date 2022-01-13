@@ -83,7 +83,7 @@ class block_dashboardchart extends block_base
     public function make_enrollment_table($datalimit)
     {
         global $DB;
-        $sql = "SELECT country, COUNT(country) as newusers FROM {user} GROUP BY country ORDER BY country" . $datalimit;
+        $sql = "SELECT country, COUNT(country) as newusers FROM {user} GROUP BY country ORDER BY count(country) desc " . $datalimit;
         $rows = $DB->get_records_sql($sql);
         $series = [];
         $labels = [];
@@ -109,7 +109,7 @@ class block_dashboardchart extends block_base
         AND ct.contextlevel=50
         and l.courseid=ct.instanceid
         group by c.fullname
-        order by count(l.userid) desc";
+        order by count(l.userid) desc" . $datalimit;
 
         $datas = $DB->get_records_sql($sql);
 
@@ -191,7 +191,8 @@ class block_dashboardchart extends block_base
         JOIN {context} AS ctx on r.contextid = ctx.id
         JOIN {course} AS c on ctx.instanceid = c.id
         WHERE rn.shortname = 'student'
-        GROUP BY c.fullname, rn.shortname" . $datalimit;
+        GROUP BY c.fullname, rn.shortname
+        ORDER BY COUNT(u.username) desc " . $datalimit;
 
         $datas = $DB->get_records_sql($sql);
 
@@ -211,11 +212,14 @@ class block_dashboardchart extends block_base
         global $DB, $USER, $OUTPUT, $CFG;
 
         $courseid = $this->config->courseid;
+        if ($courseid == null) {
+            return "select a course to show grade data";
+        }
         $userid = $USER->id;
-        $sql = " SELECT round(gg.rawgrade,2) as grade, gi.itemname from moodle.mdl_grade_grades as gg
-        join moodle.mdl_grade_items as gi on gi.courseid={$courseid}
+        $sql = " SELECT round(gg.rawgrade,2) as grade, gi.itemname from {grade_grades} as gg
+        join {grade_items} as gi on gi.courseid={$courseid}
         where gg.itemid=gi.id and
-        gg.userid={$userid} and (gg.rawgrade) is not null" . $datalimit;
+        gg.userid={$userid} and (gg.rawgrade) is not null " . $datalimit;
 
         $datas = $DB->get_records_sql($sql);
 
@@ -253,7 +257,7 @@ class block_dashboardchart extends block_base
         $chart->add_series($series2);
         $series = new \core\chart_series("user grade", $series);
         $chart->add_series($series);
-        $CFG->chart_colorset = ['#001f3f', '#0f6cbf'];
+        $CFG->chart_colorset = ['#0f6cbf', '#001f3f'];
 
         return $OUTPUT->render($chart);
     }
@@ -268,11 +272,16 @@ class block_dashboardchart extends block_base
         if (isset($this->config->graphtype)) {
             if ($this->config->graphtype == "horizontal") {
                 $chart->set_horizontal(true);
+                $CFG->chart_colorset = ['#0f6cbf'];
             } else if ($this->config->graphtype == "pie") {
                 $chart = new \core\chart_pie();
             } else if ($this->config->graphtype == "line") {
+                $CFG->chart_colorset = ['#0f6cbf'];
                 $chart = new \core\chart_line();
                 $chart->set_smooth(true);
+            } else {
+
+                $CFG->chart_colorset = ['#0f6cbf'];
             }
         }
 
