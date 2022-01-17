@@ -29,9 +29,7 @@ class block_dashboardchart extends block_base
     {
         $this->title = get_string('pluginname', 'block_dashboardchart');
     }
-    function instance_allow_multiple() {
-        return true;
-    }
+
     function get_content()
     {
 

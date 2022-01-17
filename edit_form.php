@@ -99,50 +99,50 @@ class block_dashboardchart_edit_form extends block_edit_form
         );
         $mform->setDefault('config_datalimit', '');
 
-        $mform->addElement('header', 'config_styleheader', 'Custom CSS style variables');
-
-        $mform->addElement('text', 'config_headerbg', 'Header background color:');
-        $mform->setDefault('config_headerbg', '');
-        $mform->setType('config_headerbg', PARAM_RAW);
-
-        $mform->addElement('text', 'config_headertc', 'Header text color:');
-        $mform->setDefault('config_headertc', '');
-        $mform->setType('config_headertc', PARAM_RAW);
-
-        $mform->addElement('text', 'config_oddrowbg', 'Odd table row background color:');
-        $mform->setDefault('config_oddrowbg', '');
-        $mform->setType('config_oddrowbg', PARAM_RAW);
-
-        $mform->addElement('text', 'config_oddrowtc', 'Odd table row text color:');
-        $mform->setDefault('config_oddrowtc', '');
-        $mform->setType('config_oddrowtc', PARAM_RAW);
-
-        $mform->addElement('text', 'config_evenrowbg', 'Even table row background color:');
-        $mform->setDefault('config_evenrowbg', '');
-        $mform->setType('config_evenrowbg', PARAM_RAW);
-
-        $mform->addElement('text', 'config_evenrowtc', 'Even table row text color:');
-        $mform->setDefault('config_evenrowtc', '');
-        $mform->setType('config_evenrowtc', PARAM_RAW);
-
-        $mform->addElement('text', 'config_blockbg', 'Block background color:');
-        $mform->setDefault('config_blockbg', '');
-        $mform->setType('config_blockbg', PARAM_RAW);
-
-        $mform->addElement('text', 'config_tablebg', 'Table background color:');
-        $mform->setDefault('config_tablebg', '');
-        $mform->setType('config_tablebg', PARAM_RAW);
-
-        $mform->addElement('text', 'config_tbordercolor', 'Table Outer Border Color:');
-        $mform->setDefault('config_tbordercolor', '');
-        $mform->setType('config_tbordercolor', PARAM_RAW);
-
-        $mform->addElement('text', 'config_tbradius', 'Table Outer Border Radius:');
-        $mform->setDefault('config_tbradius', '');
-        $mform->setType('config_tbradius', PARAM_RAW);
-
-        $mform->addElement('text', 'config_cellspacing', 'Table Cell Spacing:');
-        $mform->setDefault('config_cellspacing', '');
-        $mform->setType('config_cellspacing', PARAM_RAW);
+//        $mform->addElement('header', 'config_styleheader', 'Custom CSS style variables');
+//
+//        $mform->addElement('text', 'config_headerbg', 'Header background color:');
+//        $mform->setDefault('config_headerbg', '');
+//        $mform->setType('config_headerbg', PARAM_RAW);
+//
+//        $mform->addElement('text', 'config_headertc', 'Header text color:');
+//        $mform->setDefault('config_headertc', '');
+//        $mform->setType('config_headertc', PARAM_RAW);
+//
+//        $mform->addElement('text', 'config_oddrowbg', 'Odd table row background color:');
+//        $mform->setDefault('config_oddrowbg', '');
+//        $mform->setType('config_oddrowbg', PARAM_RAW);
+//
+//        $mform->addElement('text', 'config_oddrowtc', 'Odd table row text color:');
+//        $mform->setDefault('config_oddrowtc', '');
+//        $mform->setType('config_oddrowtc', PARAM_RAW);
+//
+//        $mform->addElement('text', 'config_evenrowbg', 'Even table row background color:');
+//        $mform->setDefault('config_evenrowbg', '');
+//        $mform->setType('config_evenrowbg', PARAM_RAW);
+//
+//        $mform->addElement('text', 'config_evenrowtc', 'Even table row text color:');
+//        $mform->setDefault('config_evenrowtc', '');
+//        $mform->setType('config_evenrowtc', PARAM_RAW);
+//
+//        $mform->addElement('text', 'config_blockbg', 'Block background color:');
+//        $mform->setDefault('config_blockbg', '');
+//        $mform->setType('config_blockbg', PARAM_RAW);
+//
+//        $mform->addElement('text', 'config_tablebg', 'Table background color:');
+//        $mform->setDefault('config_tablebg', '');
+//        $mform->setType('config_tablebg', PARAM_RAW);
+//
+//        $mform->addElement('text', 'config_tbordercolor', 'Table Outer Border Color:');
+//        $mform->setDefault('config_tbordercolor', '');
+//        $mform->setType('config_tbordercolor', PARAM_RAW);
+//
+//        $mform->addElement('text', 'config_tbradius', 'Table Outer Border Radius:');
+//        $mform->setDefault('config_tbradius', '');
+//        $mform->setType('config_tbradius', PARAM_RAW);
+//
+//        $mform->addElement('text', 'config_cellspacing', 'Table Cell Spacing:');
+//        $mform->setDefault('config_cellspacing', '');
+//        $mform->setType('config_cellspacing', PARAM_RAW);
     }
 }
