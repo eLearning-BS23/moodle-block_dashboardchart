@@ -23,7 +23,7 @@ You can install this block plugin from [Moodle plugins directory](https://moodle
 
 You can download zip file and install or you can put file under Custom Block Dashboard Chart.
 
-The user can use the below configuration in screenshots of change various configurations of this block plugin.
+The user can use the below configuration in screenshots to add this block plugin.
 
 <img width="458" alt="Settings1" src="https://user-images.githubusercontent.com/19352999/134147410-328dd133-a3f0-44c6-8c44-2be9fe8ef210.PNG">
 
