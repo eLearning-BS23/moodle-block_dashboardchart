@@ -1,23 +1,27 @@
-# Custom Block Leader Board
+# Custom Block Dashboard Chart
 
 Dashboard Chart plugin is a block plugin in moodle. This Plugin helps to generate different types of charts. The custom styling is yet to be done.
 
 # Leaderboard Types
 
-  1. Course Leaderboard
-  2. Enrollment Leaderboard
-  3. Forum Discussion Leaderboard
-  4. Quiz Leaderboard
+  1. Horizontal Bar
+  2. Vertical Bar
+  3. Pi chart
+  4. Line chart
 
 # Feature List
 
   - Configurable Block Heading
-  - Multiple Leaderboard Types
-  - Configurable Data Limit in query
+  - Multiple Charft Types
+  - Configurable Data Limit
+  - CCustomizable chart value
   - Configurable style properties
-  - User filter based on custom field
 
 # Configuration
+
+You can install this block plugin from [Moodle plugins directory](https://moodle.org/plugins) or can download from [Github](https://github.com/eLearning-BS23/moodle-block_dashboardchart).
+
+You can download zip file and install or you can put file under Custom Block Dashboard Chart.
 
 The user can use the below configuration in screenshots of change various configurations of this block plugin.
 
