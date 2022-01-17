@@ -28,7 +28,7 @@ The user can use the below configuration in screenshots to add this block plugin
 ![Screenshot from 2022-01-17 18-13-10](https://user-images.githubusercontent.com/97436713/149782013-d11e3e6c-eb3a-49cd-b956-c413593e6f40.png)
 
 
-<img width="413" alt="Settings2" src="https://user-images.githubusercontent.com/19352999/134147460-ec31827c-6fd1-4077-8ade-e7a1c3c11a4d.PNG">
+![Screenshot from 2022-01-17 18-14-27](https://user-images.githubusercontent.com/97436713/149782416-0b69523a-e3b1-4cf1-9fb9-e121f595bd64.png)
 
 # Sample Leaderboard Blocks
 
