@@ -25,7 +25,7 @@ You can download zip file and install or you can put file under Custom Block Das
 
 The user can use the below configuration in screenshots to add this block plugin.
 
-<img width="458" alt="Settings1" src="https://user-images.githubusercontent.com/19352999/134147410-328dd133-a3f0-44c6-8c44-2be9fe8ef210.PNG">
+![Screenshot from 2022-01-17 18-13-10](https://user-images.githubusercontent.com/97436713/149782013-d11e3e6c-eb3a-49cd-b956-c413593e6f40.png)
 
 
 <img width="413" alt="Settings2" src="https://user-images.githubusercontent.com/19352999/134147460-ec31827c-6fd1-4077-8ade-e7a1c3c11a4d.PNG">
