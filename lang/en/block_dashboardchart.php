@@ -26,6 +26,7 @@
 $string['pluginname'] = 'Dashboard Chart';
 $string['dashboardchart'] = 'Dashboard Chart';
 $string['blockstring'] = 'Heading message:';
+$string['config:courseselect'] = 'Select Course Id';
 
 
 $string['datalimitlabel'] = 'Datalimit';

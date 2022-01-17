@@ -81,7 +81,7 @@ class block_dashboardchart_edit_form extends block_edit_form
         }
 
         $mform->addElement('html', '<div id="courseleaderboard_configs" style="display: none">');
-        $mform->addElement('select', 'config_courseid', get_string('config:courseselect', 'block_customleaderboard'), $coursearray);
+        $mform->addElement('select', 'config_courseid', get_string('config:courseselect', 'block_dashboardchart'), $coursearray);
         $mform->addElement('html', '</div>');
 
         $datalimitoptions = array();
