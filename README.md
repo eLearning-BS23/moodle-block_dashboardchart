@@ -27,7 +27,7 @@ You can download zip file and install or you can put file under Custom Block Das
 The user can use the below configuration in screenshots to add this block plugin.
 
 ```
-  Customize this page->Add a block->Add->Dashboard Chart
+  Customize this page-> Add a block-> Add-> Dashboard Chart
 ```
 
 ![Screenshot from 2022-01-17 18-13-10](https://user-images.githubusercontent.com/97436713/149782013-d11e3e6c-eb3a-49cd-b956-c413593e6f40.png)
@@ -62,3 +62,13 @@ You can choose chart value and configure data limit as well:
 ![graph2](https://user-images.githubusercontent.com/97436713/149879742-90b1feeb-58e1-4c5c-8717-3c8839d1b2fe.png)
 
 ![graph3](https://user-images.githubusercontent.com/97436713/149879775-0da4cfe6-190d-4e57-893c-6c7380bba1ed.png)
+
+## Author
+- [Brain Station 23 Ltd.](https://brainstation-23.com)
+
+## License
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program. If not, see [GNU License](http://www.gnu.org/licenses/).
