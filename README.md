@@ -52,3 +52,7 @@ Vertical Bar:
 Horizontal Bar
 
 ![graph5](https://user-images.githubusercontent.com/97436713/149879207-85c1d159-dc01-46ed-a1e4-f3dca1326626.png)
+
+You can choose chart value and configure data limit as well:
+
+
