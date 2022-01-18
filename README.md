@@ -1,6 +1,7 @@
 # Custom Block Dashboard Chart
 
-Dashboard Chart plugin is a block plugin in moodle. This Plugin helps to generate different types of charts. The custom styling is yet to be done.
+Dashboard Chart plugin is a block plugin in moodle. This Plugin helps to generate different types of charts. 
+The custom styling is not functional yet. It will be updated shortly.
 
 # Leaderboard Types
 
