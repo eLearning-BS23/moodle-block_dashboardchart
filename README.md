@@ -1,6 +1,6 @@
 # Custom Block Dashboard Chart
 
-Dashboard Chart plugin is a block plugin in moodle. This Plugin helps to generate different types of charts based on chart value and data limit. 
+Dashboard Chart plugin is a block plugin in moodle. This Plugin helps to generate different types of charts such as pi chart, line chart, horizontal bar, vertical bar. User can choose the chart value and data limit and customize their charts accordingly.
 
 The custom styling is not functional yet. It will be updated shortly.
 
@@ -14,7 +14,7 @@ The custom styling is not functional yet. It will be updated shortly.
 # Feature List
 
   - Configurable Block Heading
-  - Multiple Charft Types
+  - Multiple Chart Types
   - Configurable Data Limit
   - Customizable chart value
   - Show/hide chart data
@@ -34,6 +34,7 @@ The user can use the below configuration in screenshots to add this block plugin
 
 ![Screenshot from 2022-01-17 18-13-10](https://user-images.githubusercontent.com/97436713/149782013-d11e3e6c-eb3a-49cd-b956-c413593e6f40.png)
 
+After adding dashboard chart, go to configure dashboard chart block in order to configure it:
 
 ![Screenshot from 2022-01-17 18-14-27](https://user-images.githubusercontent.com/97436713/149782416-0b69523a-e3b1-4cf1-9fb9-e121f595bd64.png)
 
