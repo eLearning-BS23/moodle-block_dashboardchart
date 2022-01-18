@@ -26,6 +26,10 @@ You can download zip file and install or you can put file under Custom Block Das
 
 The user can use the below configuration in screenshots to add this block plugin.
 
+```
+  Customize this page->Add a block->Add->Dashboard Chart
+```
+
 ![Screenshot from 2022-01-17 18-13-10](https://user-images.githubusercontent.com/97436713/149782013-d11e3e6c-eb3a-49cd-b956-c413593e6f40.png)
 
 
