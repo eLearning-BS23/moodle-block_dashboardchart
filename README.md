@@ -37,8 +37,18 @@ You can select your preferred chart from Graph type
 
 ![graph1](https://user-images.githubusercontent.com/97436713/149878566-9f1cccac-2e3f-4abb-b5ac-11c69220c5c1.png)
 
-<img width="537" alt="2" src="https://user-images.githubusercontent.com/19352999/134147541-a412932c-751e-4f5b-b1d4-73b7bd8ee99b.PNG">
+Pi Chart:
 
-<img width="222" alt="3" src="https://user-images.githubusercontent.com/19352999/134147554-d6e87efe-1ae5-4ad4-ad9e-9c0a9ef5a83e.PNG">
+![graph4](https://user-images.githubusercontent.com/97436713/149879047-0ddb21ee-0d9c-41d4-becd-3b111bd10d82.png)
 
-<img width="222" alt="4" src="https://user-images.githubusercontent.com/19352999/134147581-6042616c-286a-4ece-99d4-91a6e762e083.PNG">
+Line Chart:
+
+![graph7](https://user-images.githubusercontent.com/97436713/149879102-8ab09c50-e43c-40b6-af71-0b799d0b5d71.png)
+
+Vertical Bar:
+
+![graph6](https://user-images.githubusercontent.com/97436713/149879138-e0f63e35-2d55-4216-8ebf-b9778dd4b56e.png)
+
+Horizontal Bar
+
+![graph5](https://user-images.githubusercontent.com/97436713/149879207-85c1d159-dc01-46ed-a1e4-f3dca1326626.png)
