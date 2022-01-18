@@ -35,7 +35,7 @@ The user can use the below configuration in screenshots to add this block plugin
 
 You can select your preferred chart from Graph type
 
-<img width="538" alt="1" src="https://user-images.githubusercontent.com/19352999/134147516-b2866033-d25c-42d7-bd62-b5ad2724533d.PNG">
+![graph1](https://user-images.githubusercontent.com/97436713/149878566-9f1cccac-2e3f-4abb-b5ac-11c69220c5c1.png)
 
 <img width="537" alt="2" src="https://user-images.githubusercontent.com/19352999/134147541-a412932c-751e-4f5b-b1d4-73b7bd8ee99b.PNG">
 
