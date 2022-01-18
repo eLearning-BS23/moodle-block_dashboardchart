@@ -49,10 +49,12 @@ Vertical Bar:
 
 ![graph6](https://user-images.githubusercontent.com/97436713/149879138-e0f63e35-2d55-4216-8ebf-b9778dd4b56e.png)
 
-Horizontal Bar
+Horizontal Bar:
 
 ![graph5](https://user-images.githubusercontent.com/97436713/149879207-85c1d159-dc01-46ed-a1e4-f3dca1326626.png)
 
 You can choose chart value and configure data limit as well:
 
+![graph2](https://user-images.githubusercontent.com/97436713/149879742-90b1feeb-58e1-4c5c-8717-3c8839d1b2fe.png)
 
+![graph3](https://user-images.githubusercontent.com/97436713/149879775-0da4cfe6-190d-4e57-893c-6c7380bba1ed.png)
