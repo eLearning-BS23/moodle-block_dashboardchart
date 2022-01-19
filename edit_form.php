@@ -97,7 +97,7 @@ class block_dashboardchart_edit_form extends block_edit_form
             get_string('datalimitlabel', 'block_dashboardchart'),
             $datalimitoptions
         );
-        $mform->setDefault('config_datalimit', '');
+        $mform->setDefault('config_datalimit', 5);
 
         $mform->addElement('header', 'config_styleheader', 'Custom CSS style variables');
 
