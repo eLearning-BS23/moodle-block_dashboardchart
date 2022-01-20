@@ -56,7 +56,7 @@ class block_dashboardchart extends block_base
             }
 
             if (empty($this->config->msg)) {
-                $this->config->msg = get_string('dashboardchart', 'block_customleaderboard');
+                $this->config->msg = get_string('dashboardchart', 'block_dashboardchart');
             }
         }
     }
