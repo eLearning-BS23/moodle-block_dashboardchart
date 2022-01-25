@@ -17,21 +17,22 @@
 /**
  * Form for editing HTML block instances.
  *
- * @package   block_dashboardchart
- * @copyright 1999 onwards Martin Dougiamas (http://dougiamas.com)
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    block_dashboardchart
+ * @copyright  2021 Brain Station 23
+ * @author     Brainstation23
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-class block_dashboardchart extends block_base
-{
-
-    public function init()
-    {
+class block_dashboardchart extends block_base {
+    public function init() {
         $this->title = get_string('pluginname', 'block_dashboardchart');
     }
 
-    public function get_content()
-    {
+    public function get_content() {
+
+        if (isset($this->config->dashboardcharttype)) {
+            $this->title = $this->config->msg;
+        }
+
         if ($this->content !== null) {
             return $this->content;
         }
@@ -76,11 +77,8 @@ class block_dashboardchart extends block_base
      *
      * @return String
      */
-    public function make_custom_content()
-    {
-        if (isset($this->config->datalimit))
-            $datalimit = $this->config->datalimit;
-        else  $datalimit = '';
+    public function make_custom_content() {
+        $datalimit = $this->config->datalimit ?? 1;
         $datalimit = $this->return_data_limit($datalimit);
         if (isset($this->config->dashboardcharttype)) {
             if ($this->config->dashboardcharttype == 'coursewiseenrollment') {
@@ -94,7 +92,7 @@ class block_dashboardchart extends block_base
             } else if ($this->config->dashboardcharttype == 'active_courses') {
                 return $this->make_most_active_courses_table($datalimit);
             } else if ($this->config->dashboardcharttype == 'learner_teacher') {
-                return $this->make_learnervTeacher_table($datalimit);
+                return $this->make_learnervteacher_table($datalimit);
             } else {
                 return $this->make_enrollment_table($datalimit);
             }
@@ -108,8 +106,7 @@ class block_dashboardchart extends block_base
      *
      * @return String
      */
-    public function make_enrollment_table($datalimit)
-    {
+    public function make_enrollment_table($datalimit) {
         global $DB;
         $sql = "SELECT country, COUNT(country) as newusers FROM {user} where country <>'' GROUP BY country ORDER BY count(country) desc " . $datalimit;
         $rows = $DB->get_records_sql($sql);
@@ -125,8 +122,7 @@ class block_dashboardchart extends block_base
         return $this->display_graph($series, $labels, "Student Enrolled by contries", "Country name");
     }
 
-    public function make_most_active_courses_table($datalimit)
-    {
+    public function make_most_active_courses_table($datalimit) {
         global $DB;
         $sql = "SELECT c.fullname,count(l.userid) AS Views
         FROM {logstore_standard_log} l, {user} u, {role_assignments} r, {course} c, {context} ct
@@ -151,29 +147,22 @@ class block_dashboardchart extends block_base
         return $this->display_graph($series, $labels, "Most active course", "Course name");
     }
 
-    public function make_learnervTeacher_table($datalimit)
-    {
+    public function make_learnervteacher_table($datalimit) {
         global $DB;
-        $sql = "SELECT COUNT(DISTINCT lra.userid) AS learners, COUNT(DISTINCT tra.userid) as teachers
-            FROM {course} AS c #, {course_categories} AS cats
-            LEFT JOIN {context} AS ctx ON c.id = ctx.instanceid
-            JOIN {role_assignments}  AS lra ON lra.contextid = ctx.id
-            JOIN {role_assignments}  AS tra ON tra.contextid = ctx.id JOIN {course_categories} AS cats ON c.category = cats.id
+        $sql = "SELECT COUNT(DISTINCT lra.userid) learners, COUNT(DISTINCT tra.userid) teachers
+            FROM {course} c #, {course_categories} cats
+            LEFT JOIN {context} ctx ON c.id = ctx.instanceid
+            JOIN {role_assignments} lra ON lra.contextid = ctx.id
+            JOIN {role_assignments} tra ON tra.contextid = ctx.id JOIN {course_categories} cats ON c.category = cats.id
             WHERE c.category = cats.id
             AND lra.roleid=5
             AND tra.roleid=3" . $datalimit;
-
         $datas = $DB->get_records_sql($sql);
-        //die(var_dump($datas));
     }
 
-    public function make_login_table($datalimit)
-    {
+    public function make_login_table($datalimit) {
         global $DB;
-        $sql = "SELECT date(from_unixtime(lg.timecreated)) as date,count(distinct lg.userid) as logins FROM {logstore_standard_log} as lg
-        group by date(from_unixtime(lg.timecreated)) 
-        order by date(from_unixtime(lg.timecreated)) desc
-        " . $datalimit;
+        $sql = "SELECT date(from_unixtime(lg.timecreated)) date, count(distinct lg.userid) logins FROM {logstore_standard_log} lg group by date(from_unixtime(lg.timecreated)) order by date(from_unixtime(lg.timecreated)) desc" . $datalimit;
 
         $datas = $DB->get_records_sql($sql);
 
@@ -188,8 +177,7 @@ class block_dashboardchart extends block_base
         return $this->display_graph($series, $labels, "users log ins", "Date");
     }
 
-    public function make_category_course_table($datalimit)
-    {
+    public function make_category_course_table($datalimit) {
         global $DB;
         $sql = "SELECT {course_categories}.name, {course_categories}.coursecount
         FROM {course_categories}" . $datalimit;
@@ -207,15 +195,14 @@ class block_dashboardchart extends block_base
     }
 
 
-    public function make_course_student_table($datalimit)
-    {
+    public function make_course_student_table($datalimit) {
         global $DB;
-        $sql = "SELECT c.fullname AS 'course',COUNT(u.username) AS 'users'
-        FROM {role_assignments} AS r
-        JOIN {user} AS u on r.userid = u.id
-        JOIN {role} AS rn on r.roleid = rn.id
-        JOIN {context} AS ctx on r.contextid = ctx.id
-        JOIN {course} AS c on ctx.instanceid = c.id
+        $sql = "SELECT c.fullname 'course',COUNT(u.username) 'users'
+        FROM {role_assignments} r
+        JOIN {user} u on r.userid = u.id
+        JOIN {role} rn on r.roleid = rn.id
+        JOIN {context} ctx on r.contextid = ctx.id
+        JOIN {course} c on ctx.instanceid = c.id
         WHERE rn.shortname = 'student'
         GROUP BY c.fullname, rn.shortname
         ORDER BY COUNT(u.username) desc " . $datalimit;
@@ -233,8 +220,7 @@ class block_dashboardchart extends block_base
         return $this->display_graph($series, $labels, "Student per course", "Course name");
     }
 
-    public function make_course_grade_table($datalimit)
-    {
+    public function make_course_grade_table($datalimit) {
         global $DB, $USER, $OUTPUT, $CFG;
 
         $courseid = $this->config->courseid;
@@ -256,13 +242,9 @@ class block_dashboardchart extends block_base
             $series[] = $data->grade;
         }
 
-        $sql = "SELECT itemname FROM {grade_items} 
-        where courseid={$courseid} and itemname is not null
-                    " . $datalimit;
+        $sql = "SELECT itemname FROM {grade_items} where courseid={$courseid} and itemname is not null" . $datalimit;
 
         $datas = $DB->get_records_sql($sql);
-
-
 
         foreach ($datas as $data) {
             $labels[] = $data->itemname;
@@ -276,8 +258,7 @@ class block_dashboardchart extends block_base
         return $this->display_graph($series, $labels, "Earned grades", $coursename->fullname);
     }
 
-    public function display_graph($seriesvalue, $labels, $title, $labelx)
-    {
+    public function display_graph($seriesvalue, $labels, $title, $labelx) {
         global $OUTPUT, $CFG;
 
         $chart = new \core\chart_bar();
@@ -299,8 +280,6 @@ class block_dashboardchart extends block_base
         } else {
             $CFG->chart_colorset = ['#0f6cbf'];
         }
-
-        //$CFG->chart_colorset = ['#001f3f'];
         $chart->set_labels($labels);
         $chart->add_series($series);
         $yaxis = $chart->get_yaxis(0, true);
@@ -309,9 +288,8 @@ class block_dashboardchart extends block_base
         return $OUTPUT->render($chart);
     }
 
-    public function return_data_limit($datalimit)
-    {
-        $limit = (int) $datalimit;
+    public function return_data_limit($datalimit) {
+        $limit = (int)$datalimit;
         switch ($limit) {
             case 1:
                 return "";

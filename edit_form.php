@@ -18,24 +18,21 @@
  * Edit form class
  *
  * @package    block_dashboardchart
- * @copyright  2021 Brainstation23
+ * @copyright  2021 Brain Station 23
  * @author     Brainstation23
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-class block_dashboardchart_edit_form extends block_edit_form
-{
+class block_dashboardchart_edit_form extends block_edit_form {
 
     /**
      * Adds configuration fields in edit configuration for the block
      * @param StdClass $mform moodle form stdClass objects
      * @return void
      */
-    protected function specific_definition($mform)
-    {
-        global $DB, $PAGE, $USER;
+    protected function specific_definition($mform) {
+        global $DB, $USER;
 
-        $PAGE->requires->js_call_amd('block_dashboardchart/configure_block', 'init', array());
+        $this->page->requires->js_call_amd('block_dashboardchart/configure_block', 'init', array());
         // Section header title according to language file.
         $mform->addElement('header', 'config_header', get_string('blocksettings', 'block'));
 
@@ -44,14 +41,13 @@ class block_dashboardchart_edit_form extends block_edit_form
         $mform->setDefault('config_msg', get_string('pluginname', 'block_dashboardchart'));
         $mform->setType('config_msg', PARAM_RAW);
 
-
-        // graph tyoe
-        $graph_position = array();
-        $graph_position['horizontal'] = get_string('horizontal', 'block_dashboardchart');
-        $graph_position['vertical'] = get_string('vertical', 'block_dashboardchart');
-        $graph_position['pie'] = get_string('pie', 'block_dashboardchart');
-        $graph_position['line'] = get_string('line', 'block_dashboardchart');
-        $mform->addElement('select', 'config_graphtype', get_string('graphtype', 'block_dashboardchart'), $graph_position);
+        // Graph tyoe.
+        $graphposition = array();
+        $graphposition['horizontal'] = get_string('horizontal', 'block_dashboardchart');
+        $graphposition['vertical'] = get_string('vertical', 'block_dashboardchart');
+        $graphposition['pie'] = get_string('pie', 'block_dashboardchart');
+        $graphposition['line'] = get_string('line', 'block_dashboardchart');
+        $mform->addElement('select', 'config_graphtype', get_string('graphtype', 'block_dashboardchart'), $graphposition);
         $mform->setDefault('config_graphtype', 'vertical');
         // A sample string variable with a default value.
 
@@ -99,50 +95,5 @@ class block_dashboardchart_edit_form extends block_edit_form
         );
         $mform->setDefault('config_datalimit', 5);
 
-//        $mform->addElement('header', 'config_styleheader', 'Custom CSS style variables');
-//
-//        $mform->addElement('text', 'config_headerbg', 'Header background color:');
-//        $mform->setDefault('config_headerbg', '');
-//        $mform->setType('config_headerbg', PARAM_RAW);
-//
-//        $mform->addElement('text', 'config_headertc', 'Header text color:');
-//        $mform->setDefault('config_headertc', '');
-//        $mform->setType('config_headertc', PARAM_RAW);
-//
-//        $mform->addElement('text', 'config_oddrowbg', 'Odd table row background color:');
-//        $mform->setDefault('config_oddrowbg', '');
-//        $mform->setType('config_oddrowbg', PARAM_RAW);
-//
-//        $mform->addElement('text', 'config_oddrowtc', 'Odd table row text color:');
-//        $mform->setDefault('config_oddrowtc', '');
-//        $mform->setType('config_oddrowtc', PARAM_RAW);
-//
-//        $mform->addElement('text', 'config_evenrowbg', 'Even table row background color:');
-//        $mform->setDefault('config_evenrowbg', '');
-//        $mform->setType('config_evenrowbg', PARAM_RAW);
-//
-//        $mform->addElement('text', 'config_evenrowtc', 'Even table row text color:');
-//        $mform->setDefault('config_evenrowtc', '');
-//        $mform->setType('config_evenrowtc', PARAM_RAW);
-//
-//        $mform->addElement('text', 'config_blockbg', 'Block background color:');
-//        $mform->setDefault('config_blockbg', '');
-//        $mform->setType('config_blockbg', PARAM_RAW);
-//
-//        $mform->addElement('text', 'config_tablebg', 'Table background color:');
-//        $mform->setDefault('config_tablebg', '');
-//        $mform->setType('config_tablebg', PARAM_RAW);
-//
-//        $mform->addElement('text', 'config_tbordercolor', 'Table Outer Border Color:');
-//        $mform->setDefault('config_tbordercolor', '');
-//        $mform->setType('config_tbordercolor', PARAM_RAW);
-//
-//        $mform->addElement('text', 'config_tbradius', 'Table Outer Border Radius:');
-//        $mform->setDefault('config_tbradius', '');
-//        $mform->setType('config_tbradius', PARAM_RAW);
-//
-//        $mform->addElement('text', 'config_cellspacing', 'Table Cell Spacing:');
-//        $mform->setDefault('config_cellspacing', '');
-//        $mform->setType('config_cellspacing', PARAM_RAW);
     }
 }
