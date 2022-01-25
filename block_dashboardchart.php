@@ -25,24 +25,50 @@
 class block_dashboardchart extends block_base
 {
 
-    function init()
+    public function init()
     {
         $this->title = get_string('pluginname', 'block_dashboardchart');
     }
 
-    function get_content()
+    public function get_content()
     {
-
-        if (isset($this->config->dashboardcharttype)) {
-            $this->title = $this->config->msg;
-        }
-
         if ($this->content !== null) {
             return $this->content;
         }
+
         $this->content = new stdClass();
         $this->content->text = $this->make_custom_content();
         return $this->content;
+    }
+
+    /**
+     * Update title
+     *
+     * @return void
+     */
+    public function specialization()
+    {
+        if (isset($this->config)) {
+            if (empty($this->config->title)) {
+                $this->title = $this->config->msg;
+            } else {
+                $this->title = $this->config->msg;
+            }
+
+            if (empty($this->config->msg)) {
+                $this->config->msg = get_string('dashboardchart', 'block_dashboardchart');
+            }
+        }
+    }
+
+    /**
+     * Allow the block to have a multiple instance
+     *
+     * @return boolean
+     */
+    public function instance_allow_multiple()
+    {
+        return true;
     }
 
     /**
@@ -52,7 +78,9 @@ class block_dashboardchart extends block_base
      */
     public function make_custom_content()
     {
-        $datalimit = $this->config->datalimit;
+        if (isset($this->config->datalimit))
+            $datalimit = $this->config->datalimit;
+        else  $datalimit = '';
         $datalimit = $this->return_data_limit($datalimit);
         if (isset($this->config->dashboardcharttype)) {
             if ($this->config->dashboardcharttype == 'coursewiseenrollment') {
@@ -83,7 +111,7 @@ class block_dashboardchart extends block_base
     public function make_enrollment_table($datalimit)
     {
         global $DB;
-        $sql = "SELECT country, COUNT(country) as newusers FROM {user} GROUP BY country ORDER BY count(country) desc " . $datalimit;
+        $sql = "SELECT country, COUNT(country) as newusers FROM {user} where country <>'' GROUP BY country ORDER BY count(country) desc " . $datalimit;
         $rows = $DB->get_records_sql($sql);
         $series = [];
         $labels = [];
@@ -268,6 +296,8 @@ class block_dashboardchart extends block_base
             } else {
                 $CFG->chart_colorset = ['#0f6cbf'];
             }
+        } else {
+            $CFG->chart_colorset = ['#0f6cbf'];
         }
 
         //$CFG->chart_colorset = ['#001f3f'];
