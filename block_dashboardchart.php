@@ -47,8 +47,7 @@ class block_dashboardchart extends block_base {
      *
      * @return void
      */
-    public function specialization()
-    {
+    public function specialization() {
         if (isset($this->config)) {
             if (empty($this->config->title)) {
                 $this->title = $this->config->msg;
@@ -67,8 +66,7 @@ class block_dashboardchart extends block_base {
      *
      * @return boolean
      */
-    public function instance_allow_multiple()
-    {
+    public function instance_allow_multiple() {
         return true;
     }
 
@@ -108,7 +106,8 @@ class block_dashboardchart extends block_base {
      */
     public function make_enrollment_table($datalimit) {
         global $DB;
-        $sql = "SELECT country, COUNT(country) as newusers FROM {user} where country <>'' GROUP BY country ORDER BY count(country) desc " . $datalimit;
+        $sql = "SELECT country, COUNT(country) as newusers FROM {user} where country <>''
+GROUP BY country ORDER BY count(country) desc " . $datalimit;
         $rows = $DB->get_records_sql($sql);
         $series = [];
         $labels = [];
@@ -162,7 +161,9 @@ class block_dashboardchart extends block_base {
 
     public function make_login_table($datalimit) {
         global $DB;
-        $sql = "SELECT date(from_unixtime(lg.timecreated)) date, count(distinct lg.userid) logins FROM {logstore_standard_log} lg group by date(from_unixtime(lg.timecreated)) order by date(from_unixtime(lg.timecreated)) desc" . $datalimit;
+        $sql = "SELECT date(from_unixtime(lg.timecreated)) date, count(distinct lg.userid) logins
+FROM {logstore_standard_log} lg group by date(from_unixtime(lg.timecreated))
+order by date(from_unixtime(lg.timecreated)) desc" . $datalimit;
 
         $datas = $DB->get_records_sql($sql);
 
