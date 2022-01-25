@@ -18,12 +18,13 @@
  * Version details
  *
  * @package    block_dashboardchart
- * @copyright  1999 onwards Martin Dougiamas (http://dougiamas.com)
+ * @copyright  2021 Brain Station 23
+ * @author     Brainstation23
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2021051700;        // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2020061509;        // Requires this Moodle version.
-$plugin->component = 'block_dashboardchart';      // Full name of the plugin (used for diagnostics)
+$plugin->version = 2021051700;        // The current plugin version (Date: YYYYMMDDXX).
+$plugin->requires = 2020061509;        // Requires this Moodle version.
+$plugin->component = 'block_dashboardchart';      // Full name of the plugin (used for diagnostics).

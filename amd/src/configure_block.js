@@ -16,10 +16,10 @@
 /**
  * Edit form class
  *
- * @package    block_dashboardchart
- * @copyright  2021 Brainstation23
- * @author     Brainstation23
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * * @package    block_dashboardchart
+ *  * @copyright  2021 Brain Station 23
+ *  * @author     Brainstation23
+ *  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 define(["jquery"], function ($) {

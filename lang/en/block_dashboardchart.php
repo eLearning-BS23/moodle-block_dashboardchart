@@ -18,8 +18,8 @@
  * Lang strings for block_dashboardchart
  *
  * @package    block_dashboardchart
- * @copyright  2021 Brainstation23
- * @author     2021 Brainstation23
+ * @copyright  2021 Brain Station 23
+ * @author     Brainstation23
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
