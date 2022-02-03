@@ -17,7 +17,6 @@
 /**
  * Form for editing HTML block instances.
  *
- * @package    block_dashboardchart
  * @copyright  2021 Brain Station 23
  * @author     Brainstation23
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -28,81 +27,75 @@ class block_dashboardchart extends block_base {
     }
 
     public function get_content() {
-
-        if (isset($this->config->dashboardcharttype)) {
-            $this->title = $this->config->msg;
-        }
-
         if ($this->content !== null) {
             return $this->content;
+        } else {
+            isset($this->config->dashboardcharttype) ? $this->title = $this->config->msg : '';
         }
 
         $this->content = new stdClass();
         $this->content->text = $this->make_custom_content();
+
         return $this->content;
     }
 
     /**
-     * Update title
+     * Update title.
      *
      * @return void
      */
     public function specialization() {
         if (isset($this->config)) {
-            if (empty($this->config->title)) {
+            if (!empty($this->config->msg)) {
                 $this->title = $this->config->msg;
             } else {
-                $this->title = $this->config->msg;
-            }
-
-            if (empty($this->config->msg)) {
                 $this->config->msg = get_string('dashboardchart', 'block_dashboardchart');
             }
         }
     }
 
     /**
-     * Allow the block to have a multiple instance
+     * Allow the block to have a multiple instance.
      *
-     * @return boolean
+     * @return bool
      */
     public function instance_allow_multiple() {
         return true;
     }
 
     /**
-     * Make custom content for block_dashboardchart block
+     * Make custom content for block_dashboardchart block.
      *
-     * @return String
+     * @return string
      */
     public function make_custom_content() {
         $datalimit = $this->config->datalimit ?? 1;
         $datalimit = $this->return_data_limit($datalimit);
         if (isset($this->config->dashboardcharttype)) {
+            $dashboardtype = '';
             if ($this->config->dashboardcharttype == 'coursewiseenrollment') {
-                return $this->make_course_student_table($datalimit);
+                $dashboardtype = $this->make_course_student_table($datalimit);
             } else if ($this->config->dashboardcharttype == 'category') {
-                return $this->make_category_course_table($datalimit);
+                $dashboardtype = $this->make_category_course_table($datalimit);
             } else if ($this->config->dashboardcharttype == 'login') {
-                return $this->make_login_table($datalimit);
+                $dashboardtype = $this->make_login_table($datalimit);
             } else if ($this->config->dashboardcharttype == 'grades') {
-                return $this->make_course_grade_table($datalimit);
+                $dashboardtype = $this->make_course_grade_table($datalimit);
             } else if ($this->config->dashboardcharttype == 'active_courses') {
-                return $this->make_most_active_courses_table($datalimit);
-            } else if ($this->config->dashboardcharttype == 'learner_teacher') {
-                return $this->make_learnervteacher_table($datalimit);
+                $dashboardtype = $this->make_most_active_courses_table($datalimit);
             } else {
-                return $this->make_enrollment_table($datalimit);
+                $dashboardtype = $this->make_enrollment_table($datalimit);
             }
+            return $dashboardtype;
         } else {
             return $this->make_enrollment_table($datalimit);
         }
     }
 
     /**
-     * Make HTML table for enrollment leaderboard
+     * Make HTML table for enrollment leaderboard.
      *
-     * @return String
+     * @return string
      */
     public function make_enrollment_table($datalimit) {
         global $DB;
@@ -118,12 +111,13 @@ GROUP BY country ORDER BY count(country) desc " . $datalimit;
             $series[] = $row->newusers;
             $labels[] = get_string($row->country, 'countries');
         }
-        return $this->display_graph($series, $labels, "Student Enrolled by contries", "Country name");
+
+        return $this->display_graph($series, $labels, 'Student Enrolled by contries', 'Country name');
     }
 
     public function make_most_active_courses_table($datalimit) {
         global $DB;
-        $sql = "SELECT c.fullname,count(l.userid) AS Views
+        $sql = 'SELECT c.fullname,count(l.userid) AS Views
         FROM {logstore_standard_log} l, {user} u, {role_assignments} r, {course} c, {context} ct
         WHERE l.courseid=6
         AND l.userid = u.id
@@ -132,7 +126,7 @@ GROUP BY country ORDER BY count(country) desc " . $datalimit;
         AND ct.contextlevel=50
         and l.courseid=ct.instanceid
         group by c.fullname
-        order by count(l.userid) desc" . $datalimit;
+        order by count(l.userid) desc' . $datalimit;
 
         $datas = $DB->get_records_sql($sql);
 
@@ -143,27 +137,16 @@ GROUP BY country ORDER BY count(country) desc " . $datalimit;
             $series[] = $data->views;
             $labels[] = $data->fullname;
         }
-        return $this->display_graph($series, $labels, "Most active course", "Course name");
+
+        return $this->display_graph($series, $labels, 'Most active course', 'Course name');
     }
 
-    public function make_learnervteacher_table($datalimit) {
-        global $DB;
-        $sql = "SELECT COUNT(DISTINCT lra.userid) learners, COUNT(DISTINCT tra.userid) teachers
-            FROM {course} c #, {course_categories} cats
-            LEFT JOIN {context} ctx ON c.id = ctx.instanceid
-            JOIN {role_assignments} lra ON lra.contextid = ctx.id
-            JOIN {role_assignments} tra ON tra.contextid = ctx.id JOIN {course_categories} cats ON c.category = cats.id
-            WHERE c.category = cats.id
-            AND lra.roleid=5
-            AND tra.roleid=3" . $datalimit;
-        $datas = $DB->get_records_sql($sql);
-    }
 
     public function make_login_table($datalimit) {
         global $DB;
-        $sql = "SELECT date(from_unixtime(lg.timecreated)) date, count(distinct lg.userid) logins
+        $sql = 'SELECT date(from_unixtime(lg.timecreated)) date, count(distinct lg.userid) logins
 FROM {logstore_standard_log} lg group by date(from_unixtime(lg.timecreated))
-order by date(from_unixtime(lg.timecreated)) desc" . $datalimit;
+order by date(from_unixtime(lg.timecreated)) desc' . $datalimit;
 
         $datas = $DB->get_records_sql($sql);
 
@@ -175,13 +158,13 @@ order by date(from_unixtime(lg.timecreated)) desc" . $datalimit;
             $labels[] = $data->date;
         }
 
-        return $this->display_graph($series, $labels, "users log ins", "Date");
+        return $this->display_graph($series, $labels, 'users log ins', 'Date');
     }
 
     public function make_category_course_table($datalimit) {
         global $DB;
-        $sql = "SELECT {course_categories}.name, {course_categories}.coursecount
-        FROM {course_categories}" . $datalimit;
+        $sql = 'SELECT {course_categories}.name, {course_categories}.coursecount
+        FROM {course_categories}' . $datalimit;
         $datas = $DB->get_records_sql($sql);
 
         $series = [];
@@ -192,9 +175,8 @@ order by date(from_unixtime(lg.timecreated)) desc" . $datalimit;
             $labels[] = $data->name;
         }
 
-        return $this->display_graph($series, $labels, "No of courses", "Category name");
+        return $this->display_graph($series, $labels, 'No of courses', 'Category name');
     }
-
 
     public function make_course_student_table($datalimit) {
         global $DB;
@@ -218,7 +200,7 @@ order by date(from_unixtime(lg.timecreated)) desc" . $datalimit;
             $labels[] = $data->course;
         }
 
-        return $this->display_graph($series, $labels, "Student per course", "Course name");
+        return $this->display_graph($series, $labels, 'Student per course', 'Course name');
     }
 
     public function make_course_grade_table($datalimit) {
@@ -226,7 +208,7 @@ order by date(from_unixtime(lg.timecreated)) desc" . $datalimit;
 
         $courseid = $this->config->courseid;
         if ($courseid == null) {
-            return "select a course to show grade data";
+            return 'select a course to show grade data';
         }
         $userid = $USER->id;
         $sql = " SELECT round(gg.rawgrade,2) as grade, gi.itemname from {grade_grades} as gg
@@ -256,7 +238,8 @@ order by date(from_unixtime(lg.timecreated)) desc" . $datalimit;
 
         $sql = "SELECT fullname FROM {course} where id={$courseid}";
         $coursename = $DB->get_record_sql($sql);
-        return $this->display_graph($series, $labels, "Earned grades", $coursename->fullname);
+
+        return $this->display_graph($series, $labels, 'Earned grades', $coursename->fullname);
     }
 
     public function display_graph($seriesvalue, $labels, $title, $labelx) {
@@ -265,43 +248,45 @@ order by date(from_unixtime(lg.timecreated)) desc" . $datalimit;
         $chart = new \core\chart_bar();
         $series = new \core\chart_series($title, $seriesvalue);
 
+        $chartcolour = '#0f6cbf';
         if (isset($this->config->graphtype)) {
-            if ($this->config->graphtype == "horizontal") {
+            if ($this->config->graphtype == 'horizontal') {
                 $chart->set_horizontal(true);
-                $CFG->chart_colorset = ['#0f6cbf'];
-            } else if ($this->config->graphtype == "pie") {
+                $CFG->chart_colorset = [$chartcolour];
+            } else if ($this->config->graphtype == 'pie') {
                 $chart = new \core\chart_pie();
-            } else if ($this->config->graphtype == "line") {
-                $CFG->chart_colorset = ['#0f6cbf'];
+            } else if ($this->config->graphtype == 'line') {
+                $CFG->chart_colorset = [$chartcolour];
                 $chart = new \core\chart_line();
                 $chart->set_smooth(true);
             } else {
-                $CFG->chart_colorset = ['#0f6cbf'];
+                $CFG->chart_colorset = [$chartcolour];
             }
         } else {
-            $CFG->chart_colorset = ['#0f6cbf'];
+            $CFG->chart_colorset = [$chartcolour];
         }
         $chart->set_labels($labels);
         $chart->add_series($series);
         $yaxis = $chart->get_yaxis(0, true);
         $yaxis->set_min(0);
         $chart->get_xaxis(0, true)->set_label($labelx);
+
         return $OUTPUT->render($chart);
     }
 
     public function return_data_limit($datalimit) {
-        $limit = (int)$datalimit;
+        $limit = (int) $datalimit;
         switch ($limit) {
             case 1:
-                return "";
+                return '';
             case 5:
-                return " LIMIT 5 ";
+                return ' LIMIT 5 ';
             case 10:
-                return " LIMIT 10 ";
+                return ' LIMIT 10 ';
             case 20:
-                return " LIMIT 20 ";
+                return ' LIMIT 20 ';
             default:
-                return " LIMIT 10 ";
+                return ' LIMIT 10 ';
         }
     }
 }

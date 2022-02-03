@@ -94,6 +94,5 @@ class block_dashboardchart_edit_form extends block_edit_form {
             $datalimitoptions
         );
         $mform->setDefault('config_datalimit', 5);
-
     }
 }
