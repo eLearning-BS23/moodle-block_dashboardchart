@@ -21,12 +21,15 @@
  * @author     Brainstation23
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class block_dashboardchart extends block_base {
-    public function init() {
+class block_dashboardchart extends block_base
+{
+    public function init()
+    {
         $this->title = get_string('pluginname', 'block_dashboardchart');
     }
 
-    public function get_content() {
+    public function get_content()
+    {
         if ($this->content !== null) {
             return $this->content;
         } else {
@@ -44,7 +47,8 @@ class block_dashboardchart extends block_base {
      *
      * @return void
      */
-    public function specialization() {
+    public function specialization()
+    {
         if (isset($this->config)) {
             if (!empty($this->config->msg)) {
                 $this->title = $this->config->msg;
@@ -59,7 +63,8 @@ class block_dashboardchart extends block_base {
      *
      * @return bool
      */
-    public function instance_allow_multiple() {
+    public function instance_allow_multiple()
+    {
         return true;
     }
 
@@ -68,9 +73,10 @@ class block_dashboardchart extends block_base {
      *
      * @return string
      */
-    public function make_custom_content() {
-        $datalimit = $this->config->datalimit ?? 1;
-        $datalimit = $this->return_data_limit($datalimit);
+    public function make_custom_content()
+    {
+        $datalimit = $this->config->datalimit ?? 5;
+
         if (isset($this->config->dashboardcharttype)) {
             $dashboardtype = '';
             if ($this->config->dashboardcharttype == 'coursewiseenrollment') {
@@ -93,15 +99,16 @@ class block_dashboardchart extends block_base {
     }
 
     /**
-     * Make HTML table for enrollment leaderboard.
+     * Make  table for enrollment leaderboard.
      *
      * @return string
      */
-    public function make_enrollment_table($datalimit) {
+    public function make_enrollment_table($datalimit)
+    {
         global $DB;
         $sql = "SELECT country, COUNT(country) as newusers FROM {user} where country <>''
-GROUP BY country ORDER BY count(country) desc " . $datalimit;
-        $rows = $DB->get_records_sql($sql);
+GROUP BY country ORDER BY count(country) desc ";
+        $rows = $DB->get_records_sql($sql, null, 0, $datalimit);
         $series = [];
         $labels = [];
         foreach ($rows as $row) {
@@ -115,7 +122,8 @@ GROUP BY country ORDER BY count(country) desc " . $datalimit;
         return $this->display_graph($series, $labels, 'Student Enrolled by contries', 'Country name');
     }
 
-    public function make_most_active_courses_table($datalimit) {
+    public function make_most_active_courses_table($datalimit)
+    {
         global $DB;
         $sql = 'SELECT c.fullname,count(l.userid) AS Views
         FROM {logstore_standard_log} l, {user} u, {role_assignments} r, {course} c, {context} ct
@@ -126,9 +134,9 @@ GROUP BY country ORDER BY count(country) desc " . $datalimit;
         AND ct.contextlevel=50
         and l.courseid=ct.instanceid
         group by c.fullname
-        order by count(l.userid) desc' . $datalimit;
+        order by count(l.userid) desc';
 
-        $datas = $DB->get_records_sql($sql);
+        $datas = $DB->get_records_sql($sql, null, 0, $datalimit);
 
         $series = [];
         $labels = [];
@@ -142,13 +150,14 @@ GROUP BY country ORDER BY count(country) desc " . $datalimit;
     }
 
 
-    public function make_login_table($datalimit) {
+    public function make_login_table($datalimit)
+    {
         global $DB;
         $sql = 'SELECT date(from_unixtime(lg.timecreated)) date, count(distinct lg.userid) logins
 FROM {logstore_standard_log} lg group by date(from_unixtime(lg.timecreated))
-order by date(from_unixtime(lg.timecreated)) desc' . $datalimit;
+order by date(from_unixtime(lg.timecreated)) desc';
 
-        $datas = $DB->get_records_sql($sql);
+        $datas = $DB->get_records_sql($sql, null, 0, $datalimit);
 
         $series = [];
         $labels = [];
@@ -161,11 +170,12 @@ order by date(from_unixtime(lg.timecreated)) desc' . $datalimit;
         return $this->display_graph($series, $labels, 'users log ins', 'Date');
     }
 
-    public function make_category_course_table($datalimit) {
+    public function make_category_course_table($datalimit)
+    {
         global $DB;
         $sql = 'SELECT {course_categories}.name, {course_categories}.coursecount
-        FROM {course_categories}' . $datalimit;
-        $datas = $DB->get_records_sql($sql);
+        FROM {course_categories}';
+        $datas = $DB->get_records_sql($sql, null, 0, $datalimit);
 
         $series = [];
         $labels = [];
@@ -178,7 +188,8 @@ order by date(from_unixtime(lg.timecreated)) desc' . $datalimit;
         return $this->display_graph($series, $labels, 'No of courses', 'Category name');
     }
 
-    public function make_course_student_table($datalimit) {
+    public function make_course_student_table($datalimit)
+    {
         global $DB;
         $sql = "SELECT c.fullname 'course',COUNT(u.username) 'users'
         FROM {role_assignments} r
@@ -188,9 +199,9 @@ order by date(from_unixtime(lg.timecreated)) desc' . $datalimit;
         JOIN {course} c on ctx.instanceid = c.id
         WHERE rn.shortname = 'student'
         GROUP BY c.fullname, rn.shortname
-        ORDER BY COUNT(u.username) desc " . $datalimit;
+        ORDER BY COUNT(u.username) desc ";
 
-        $datas = $DB->get_records_sql($sql);
+        $datas = $DB->get_records_sql($sql, null, 0, $datalimit);
 
         $series = [];
         $labels = [];
@@ -203,7 +214,8 @@ order by date(from_unixtime(lg.timecreated)) desc' . $datalimit;
         return $this->display_graph($series, $labels, 'Student per course', 'Course name');
     }
 
-    public function make_course_grade_table($datalimit) {
+    public function make_course_grade_table($datalimit)
+    {
         global $DB, $USER, $OUTPUT, $CFG;
 
         $courseid = $this->config->courseid;
@@ -214,9 +226,9 @@ order by date(from_unixtime(lg.timecreated)) desc' . $datalimit;
         $sql = " SELECT round(gg.rawgrade,2) as grade, gi.itemname from {grade_grades} as gg
         join {grade_items} as gi on gi.courseid={$courseid}
         where gg.itemid=gi.id and
-        gg.userid={$userid} and (gg.rawgrade) is not null " . $datalimit;
+        gg.userid={$userid} and (gg.rawgrade) is not null ";
 
-        $datas = $DB->get_records_sql($sql);
+        $datas = $DB->get_records_sql($sql, null, 0, $datalimit);
 
         $series = [];
         $labels = [];
@@ -225,9 +237,9 @@ order by date(from_unixtime(lg.timecreated)) desc' . $datalimit;
             $series[] = $data->grade;
         }
 
-        $sql = "SELECT itemname FROM {grade_items} where courseid={$courseid} and itemname is not null" . $datalimit;
+        $sql = "SELECT itemname FROM {grade_items} where courseid={$courseid} and itemname is not null";
 
-        $datas = $DB->get_records_sql($sql);
+        $datas = $DB->get_records_sql($sql, null, 0, $datalimit);
 
         foreach ($datas as $data) {
             $labels[] = $data->itemname;
@@ -237,12 +249,13 @@ order by date(from_unixtime(lg.timecreated)) desc' . $datalimit;
         }
 
         $sql = "SELECT fullname FROM {course} where id={$courseid}";
-        $coursename = $DB->get_record_sql($sql);
+        $coursename = $DB->get_record_sql($sql, null, 0, $datalimit);
 
         return $this->display_graph($series, $labels, 'Earned grades', $coursename->fullname);
     }
 
-    public function display_graph($seriesvalue, $labels, $title, $labelx) {
+    public function display_graph($seriesvalue, $labels, $title, $labelx)
+    {
         global $OUTPUT, $CFG;
 
         $chart = new \core\chart_bar();
@@ -272,21 +285,5 @@ order by date(from_unixtime(lg.timecreated)) desc' . $datalimit;
         $chart->get_xaxis(0, true)->set_label($labelx);
 
         return $OUTPUT->render($chart);
-    }
-
-    public function return_data_limit($datalimit) {
-        $limit = (int) $datalimit;
-        switch ($limit) {
-            case 1:
-                return '';
-            case 5:
-                return ' LIMIT 5 ';
-            case 10:
-                return ' LIMIT 10 ';
-            case 20:
-                return ' LIMIT 20 ';
-            default:
-                return ' LIMIT 10 ';
-        }
     }
 }
