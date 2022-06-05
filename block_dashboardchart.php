@@ -21,15 +21,12 @@
  * @author     Brainstation23
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class block_dashboardchart extends block_base
-{
-    public function init()
-    {
+class block_dashboardchart extends block_base {
+    public function init() {
         $this->title = get_string('pluginname', 'block_dashboardchart');
     }
 
-    public function get_content()
-    {
+    public function get_content() {
         if ($this->content !== null) {
             return $this->content;
         } else {
@@ -47,8 +44,7 @@ class block_dashboardchart extends block_base
      *
      * @return void
      */
-    public function specialization()
-    {
+    public function specialization() {
         if (isset($this->config)) {
             if (!empty($this->config->msg)) {
                 $this->title = $this->config->msg;
@@ -63,8 +59,7 @@ class block_dashboardchart extends block_base
      *
      * @return bool
      */
-    public function instance_allow_multiple()
-    {
+    public function instance_allow_multiple() {
         return true;
     }
 
@@ -73,8 +68,7 @@ class block_dashboardchart extends block_base
      *
      * @return string
      */
-    public function make_custom_content()
-    {
+    public function make_custom_content() {
         $datalimit = $this->config->datalimit ?? 5;
 
         if (isset($this->config->dashboardcharttype)) {
@@ -103,8 +97,7 @@ class block_dashboardchart extends block_base
      *
      * @return string
      */
-    public function make_enrollment_table($datalimit)
-    {
+    public function make_enrollment_table($datalimit) {
         global $DB;
         $sql = "SELECT country, COUNT(country) as newusers FROM {user} where country <>''
 GROUP BY country ORDER BY count(country) desc ";
@@ -122,8 +115,7 @@ GROUP BY country ORDER BY count(country) desc ";
         return $this->display_graph($series, $labels, 'Student Enrolled by contries', 'Country name');
     }
 
-    public function make_most_active_courses_table($datalimit)
-    {
+    public function make_most_active_courses_table($datalimit) {
         global $DB;
         $sql = 'SELECT c.fullname,count(l.userid) AS Views
         FROM {logstore_standard_log} l, {user} u, {role_assignments} r, {course} c, {context} ct
@@ -150,8 +142,7 @@ GROUP BY country ORDER BY count(country) desc ";
     }
 
 
-    public function make_login_table($datalimit)
-    {
+    public function make_login_table($datalimit) {
         global $DB;
         $sql = 'SELECT date(from_unixtime(lg.timecreated)) date, count(distinct lg.userid) logins
 FROM {logstore_standard_log} lg group by date(from_unixtime(lg.timecreated))
@@ -170,8 +161,7 @@ order by date(from_unixtime(lg.timecreated)) desc';
         return $this->display_graph($series, $labels, 'users log ins', 'Date');
     }
 
-    public function make_category_course_table($datalimit)
-    {
+    public function make_category_course_table($datalimit) {
         global $DB;
         $sql = 'SELECT {course_categories}.name, {course_categories}.coursecount
         FROM {course_categories}';
@@ -188,8 +178,7 @@ order by date(from_unixtime(lg.timecreated)) desc';
         return $this->display_graph($series, $labels, 'No of courses', 'Category name');
     }
 
-    public function make_course_student_table($datalimit)
-    {
+    public function make_course_student_table($datalimit) {
         global $DB;
         $sql = "SELECT c.fullname 'course',COUNT(u.username) 'users'
         FROM {role_assignments} r
@@ -214,8 +203,7 @@ order by date(from_unixtime(lg.timecreated)) desc';
         return $this->display_graph($series, $labels, 'Student per course', 'Course name');
     }
 
-    public function make_course_grade_table($datalimit)
-    {
+    public function make_course_grade_table($datalimit) {
         global $DB, $USER, $OUTPUT, $CFG;
 
         $courseid = $this->config->courseid;
@@ -254,8 +242,7 @@ order by date(from_unixtime(lg.timecreated)) desc';
         return $this->display_graph($series, $labels, 'Earned grades', $coursename->fullname);
     }
 
-    public function display_graph($seriesvalue, $labels, $title, $labelx)
-    {
+    public function display_graph($seriesvalue, $labels, $title, $labelx) {
         global $OUTPUT, $CFG;
 
         $chart = new \core\chart_bar();

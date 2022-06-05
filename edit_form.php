@@ -22,16 +22,14 @@
  * @author     Brainstation23
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class block_dashboardchart_edit_form extends block_edit_form
-{
+class block_dashboardchart_edit_form extends block_edit_form {
 
     /**
      * Adds configuration fields in edit configuration for the block
      * @param StdClass $mform moodle form stdClass objects
      * @return void
      */
-    protected function specific_definition($mform)
-    {
+    protected function specific_definition($mform) {
         global $DB, $USER, $PAGE;
 
         $PAGE->requires->js_call_amd('block_dashboardchart/configure_block', 'init', array());
