@@ -22,27 +22,25 @@
  *  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-define(["jquery"], function ($) {
-  return {
-    init: function () {
-      /**
-       * Manage course input
-       */
-      function mangeCourseInputField() {
-        var dbcharttype = $("#id_config_dashboardcharttype :selected").val();
-        if (dbcharttype == "grades") {
-          document.getElementById("courseleaderboard_configs").style.display =
-            "block";
-        } else {
-          document.getElementById("courseleaderboard_configs").style.display =
-            "none";
-        }
-      }
-      mangeCourseInputField();
+import $ from "jquery";
 
-      $("#id_config_dashboardcharttype").on("change", function () {
-        mangeCourseInputField();
-      });
-    },
-  };
-});
+export const init = () => {
+  /**
+   * Manage course input
+   */
+  function mangeCourseInputField() {
+    var dbcharttype = $("#id_config_dashboardcharttype :selected").val();
+    if (dbcharttype == "grades") {
+      document.getElementById("courseleaderboard_configs").style.display =
+        "block";
+    } else {
+      document.getElementById("courseleaderboard_configs").style.display =
+        "none";
+    }
+  }
+  mangeCourseInputField();
+
+  $("#id_config_dashboardcharttype").on("change", function () {
+    mangeCourseInputField();
+  });
+};
