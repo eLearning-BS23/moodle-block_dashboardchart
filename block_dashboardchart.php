@@ -69,8 +69,8 @@ class block_dashboardchart extends block_base {
      * @return string
      */
     public function make_custom_content() {
-        $datalimit = $this->config->datalimit ?? 1;
-        $datalimit = $this->return_data_limit($datalimit);
+        $datalimit = $this->config->datalimit ?? 5;
+
         if (isset($this->config->dashboardcharttype)) {
             $dashboardtype = '';
             if ($this->config->dashboardcharttype == 'coursewiseenrollment') {
@@ -93,15 +93,15 @@ class block_dashboardchart extends block_base {
     }
 
     /**
-     * Make HTML table for enrollment leaderboard.
+     * Make  table for enrollment leaderboard.
      *
      * @return string
      */
     public function make_enrollment_table($datalimit) {
         global $DB;
         $sql = "SELECT country, COUNT(country) as newusers FROM {user} where country <>''
-GROUP BY country ORDER BY count(country) desc " . $datalimit;
-        $rows = $DB->get_records_sql($sql);
+GROUP BY country ORDER BY count(country) desc ";
+        $rows = $DB->get_records_sql($sql, null, 0, $datalimit);
         $series = [];
         $labels = [];
         foreach ($rows as $row) {
@@ -126,9 +126,9 @@ GROUP BY country ORDER BY count(country) desc " . $datalimit;
         AND ct.contextlevel=50
         and l.courseid=ct.instanceid
         group by c.fullname
-        order by count(l.userid) desc' . $datalimit;
+        order by count(l.userid) desc';
 
-        $datas = $DB->get_records_sql($sql);
+        $datas = $DB->get_records_sql($sql, null, 0, $datalimit);
 
         $series = [];
         $labels = [];
@@ -146,9 +146,9 @@ GROUP BY country ORDER BY count(country) desc " . $datalimit;
         global $DB;
         $sql = 'SELECT date(from_unixtime(lg.timecreated)) date, count(distinct lg.userid) logins
 FROM {logstore_standard_log} lg group by date(from_unixtime(lg.timecreated))
-order by date(from_unixtime(lg.timecreated)) desc' . $datalimit;
+order by date(from_unixtime(lg.timecreated)) desc';
 
-        $datas = $DB->get_records_sql($sql);
+        $datas = $DB->get_records_sql($sql, null, 0, $datalimit);
 
         $series = [];
         $labels = [];
@@ -164,8 +164,8 @@ order by date(from_unixtime(lg.timecreated)) desc' . $datalimit;
     public function make_category_course_table($datalimit) {
         global $DB;
         $sql = 'SELECT {course_categories}.name, {course_categories}.coursecount
-        FROM {course_categories}' . $datalimit;
-        $datas = $DB->get_records_sql($sql);
+        FROM {course_categories}';
+        $datas = $DB->get_records_sql($sql, null, 0, $datalimit);
 
         $series = [];
         $labels = [];
@@ -188,9 +188,9 @@ order by date(from_unixtime(lg.timecreated)) desc' . $datalimit;
         JOIN {course} c on ctx.instanceid = c.id
         WHERE rn.shortname = 'student'
         GROUP BY c.fullname, rn.shortname
-        ORDER BY COUNT(u.username) desc " . $datalimit;
+        ORDER BY COUNT(u.username) desc ";
 
-        $datas = $DB->get_records_sql($sql);
+        $datas = $DB->get_records_sql($sql, null, 0, $datalimit);
 
         $series = [];
         $labels = [];
@@ -214,9 +214,9 @@ order by date(from_unixtime(lg.timecreated)) desc' . $datalimit;
         $sql = " SELECT round(gg.rawgrade,2) as grade, gi.itemname from {grade_grades} as gg
         join {grade_items} as gi on gi.courseid={$courseid}
         where gg.itemid=gi.id and
-        gg.userid={$userid} and (gg.rawgrade) is not null " . $datalimit;
+        gg.userid={$userid} and (gg.rawgrade) is not null ";
 
-        $datas = $DB->get_records_sql($sql);
+        $datas = $DB->get_records_sql($sql, null, 0, $datalimit);
 
         $series = [];
         $labels = [];
@@ -225,9 +225,9 @@ order by date(from_unixtime(lg.timecreated)) desc' . $datalimit;
             $series[] = $data->grade;
         }
 
-        $sql = "SELECT itemname FROM {grade_items} where courseid={$courseid} and itemname is not null" . $datalimit;
+        $sql = "SELECT itemname FROM {grade_items} where courseid={$courseid} and itemname is not null";
 
-        $datas = $DB->get_records_sql($sql);
+        $datas = $DB->get_records_sql($sql, null, 0, $datalimit);
 
         foreach ($datas as $data) {
             $labels[] = $data->itemname;
@@ -237,7 +237,7 @@ order by date(from_unixtime(lg.timecreated)) desc' . $datalimit;
         }
 
         $sql = "SELECT fullname FROM {course} where id={$courseid}";
-        $coursename = $DB->get_record_sql($sql);
+        $coursename = $DB->get_record_sql($sql, null, 0, $datalimit);
 
         return $this->display_graph($series, $labels, 'Earned grades', $coursename->fullname);
     }
@@ -272,21 +272,5 @@ order by date(from_unixtime(lg.timecreated)) desc' . $datalimit;
         $chart->get_xaxis(0, true)->set_label($labelx);
 
         return $OUTPUT->render($chart);
-    }
-
-    public function return_data_limit($datalimit) {
-        $limit = (int) $datalimit;
-        switch ($limit) {
-            case 1:
-                return '';
-            case 5:
-                return ' LIMIT 5 ';
-            case 10:
-                return ' LIMIT 10 ';
-            case 20:
-                return ' LIMIT 20 ';
-            default:
-                return ' LIMIT 10 ';
-        }
     }
 }

@@ -27,6 +27,8 @@ $string['pluginname'] = 'Dashboard Chart';
 $string['dashboardchart'] = 'Dashboard Chart';
 $string['blockstring'] = 'Heading message:';
 $string['config:courseselect'] = 'Select Course Id';
+$string['dashboardchart:myaddinstance'] = 'Add a new chart to Dashboard';
+$string['dashboardchart:addinstance'] = 'Add a new chart';
 
 
 $string['datalimitlabel'] = 'Datalimit';
