@@ -17,15 +17,26 @@
 /**
  * Form for editing HTML block instances.
  *
+ * @package    block_dashboardchart
  * @copyright  2021 Brain Station 23
  * @author     Brainstation23
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 class block_dashboardchart extends block_base {
+    /**
+     * init function for plugin name
+     * @return void
+     * @throws coding_exception
+     */
     public function init() {
         $this->title = get_string('pluginname', 'block_dashboardchart');
     }
 
+    /**
+     * get content function
+     * @return stdClass|stdObject|null
+     */
     public function get_content() {
         if ($this->content !== null) {
             return $this->content;
@@ -94,18 +105,20 @@ class block_dashboardchart extends block_base {
 
     /**
      * Make  table for enrollment leaderboard.
-     *
+     * @param int $datalimit
      * @return string
      */
     public function make_enrollment_table($datalimit) {
         global $DB;
-        $sql = "SELECT country, COUNT(country) as newusers FROM {user} where country <>''
-GROUP BY country ORDER BY count(country) desc ";
+        $sql = "SELECT country, COUNT(country) as newusers
+                FROM {user} where country <>''
+                GROUP BY country ORDER BY count(country) desc";
+
         $rows = $DB->get_records_sql($sql, null, 0, $datalimit);
         $series = [];
         $labels = [];
         foreach ($rows as $row) {
-            if (empty($row->country) or $row->country == '') {
+            if (empty($row->country) || $row->country == '') {
                 continue;
             }
             $series[] = $row->newusers;
@@ -115,25 +128,28 @@ GROUP BY country ORDER BY count(country) desc ";
         return $this->display_graph($series, $labels, 'Student Enrolled by contries', 'Country name');
     }
 
+    /**
+     * Getting course records from the database
+     * @param int $datalimit
+     * @return mixed
+     * @throws dml_exception
+     */
     public function make_most_active_courses_table($datalimit) {
         global $DB;
         $sql = 'SELECT c.fullname,count(l.userid) AS Views
-        FROM {logstore_standard_log} l, {user} u, {role_assignments} r, {course} c, {context} ct
-        WHERE l.courseid=6
-        AND l.userid = u.id
-        AND r.roleid=5
-        AND r.userid = u.id
-        AND ct.contextlevel=50
-        and l.courseid=ct.instanceid
-        group by c.fullname
-        order by count(l.userid) desc';
+                FROM {logstore_standard_log} l, {user} u, {role_assignments} r, {course} c, {context} ct
+                WHERE l.courseid=6 AND l.userid = u.id
+                AND r.roleid=5 AND r.userid = u.id
+                AND ct.contextlevel=50 AND l.courseid=ct.instanceid
+                GROUP BY c.fullname
+                ORDER BY count(l.userid) desc';
 
-        $datas = $DB->get_records_sql($sql, null, 0, $datalimit);
+        $records = $DB->get_records_sql($sql, null, 0, $datalimit);
 
         $series = [];
         $labels = [];
 
-        foreach ($datas as $data) {
+        foreach ($records as $data) {
             $series[] = $data->views;
             $labels[] = $data->fullname;
         }
@@ -141,19 +157,25 @@ GROUP BY country ORDER BY count(country) desc ";
         return $this->display_graph($series, $labels, 'Most active course', 'Course name');
     }
 
-
+    /**
+     * Login Table function
+     * @param int $datalimit
+     * @return mixed
+     * @throws dml_exception
+     */
     public function make_login_table($datalimit) {
         global $DB;
         $sql = 'SELECT date(from_unixtime(lg.timecreated)) date, count(distinct lg.userid) logins
-FROM {logstore_standard_log} lg group by date(from_unixtime(lg.timecreated))
-order by date(from_unixtime(lg.timecreated)) desc';
+                FROM {logstore_standard_log} lg
+                GROUP BY date(from_unixtime(lg.timecreated))
+                ORDER BY date(from_unixtime(lg.timecreated)) desc';
 
-        $datas = $DB->get_records_sql($sql, null, 0, $datalimit);
+        $records = $DB->get_records_sql($sql, null, 0, $datalimit);
 
         $series = [];
         $labels = [];
 
-        foreach ($datas as $data) {
+        foreach ($records as $data) {
             $series[] = $data->logins;
             $labels[] = $data->date;
         }
@@ -161,16 +183,24 @@ order by date(from_unixtime(lg.timecreated)) desc';
         return $this->display_graph($series, $labels, 'users log ins', 'Date');
     }
 
+    /**
+     *  Getting category wise course table
+     * @param int $datalimit
+     * @return mixed
+     * @throws dml_exception
+     */
     public function make_category_course_table($datalimit) {
         global $DB;
+
         $sql = 'SELECT {course_categories}.name, {course_categories}.coursecount
-        FROM {course_categories}';
-        $datas = $DB->get_records_sql($sql, null, 0, $datalimit);
+                FROM {course_categories}';
+
+        $records = $DB->get_records_sql($sql, null, 0, $datalimit);
 
         $series = [];
         $labels = [];
 
-        foreach ($datas as $data) {
+        foreach ($records as $data) {
             $series[] = $data->coursecount;
             $labels[] = $data->name;
         }
@@ -178,24 +208,31 @@ order by date(from_unixtime(lg.timecreated)) desc';
         return $this->display_graph($series, $labels, 'No of courses', 'Category name');
     }
 
+    /**
+     * Getting data about course and users
+     * @param int $datalimit
+     * @return mixed
+     * @throws dml_exception
+     */
     public function make_course_student_table($datalimit) {
         global $DB;
-        $sql = "SELECT c.fullname 'course',COUNT(u.username) 'users'
-        FROM {role_assignments} r
-        JOIN {user} u on r.userid = u.id
-        JOIN {role} rn on r.roleid = rn.id
-        JOIN {context} ctx on r.contextid = ctx.id
-        JOIN {course} c on ctx.instanceid = c.id
-        WHERE rn.shortname = 'student'
-        GROUP BY c.fullname, rn.shortname
-        ORDER BY COUNT(u.username) desc ";
 
-        $datas = $DB->get_records_sql($sql, null, 0, $datalimit);
+        $sql = "SELECT c.fullname 'course', COUNT(u.username) 'users'
+                FROM {role_assignments} r
+                JOIN {user} u on r.userid = u.id
+                JOIN {role} rn on r.roleid = rn.id
+                JOIN {context} ctx on r.contextid = ctx.id
+                JOIN {course} c on ctx.instanceid = c.id
+                WHERE rn.shortname = 'student'
+                GROUP BY c.fullname, rn.shortname
+                ORDER BY COUNT(u.username) desc";
+
+        $records = $DB->get_records_sql($sql, null, 0, $datalimit);
 
         $series = [];
         $labels = [];
 
-        foreach ($datas as $data) {
+        foreach ($records as $data) {
             $series[] = $data->users;
             $labels[] = $data->course;
         }
@@ -203,33 +240,39 @@ order by date(from_unixtime(lg.timecreated)) desc';
         return $this->display_graph($series, $labels, 'Student per course', 'Course name');
     }
 
+    /**
+     * Getting data within a limit
+     * @param int $datalimit
+     * @return string
+     * @throws dml_exception
+     */
     public function make_course_grade_table($datalimit) {
-        global $DB, $USER, $OUTPUT, $CFG;
+        global $DB, $USER;
 
         $courseid = $this->config->courseid;
         if ($courseid == null) {
             return 'select a course to show grade data';
         }
         $userid = $USER->id;
-        $sql = " SELECT round(gg.rawgrade,2) as grade, gi.itemname from {grade_grades} as gg
-        join {grade_items} as gi on gi.courseid={$courseid}
-        where gg.itemid=gi.id and
-        gg.userid={$userid} and (gg.rawgrade) is not null ";
+        $sql = "SELECT round(gg.rawgrade,2) as grade, gi.itemname
+                FROM {grade_grades} as gg
+                JOIN {grade_items} as gi on gi.courseid={$courseid}
+                WHERE gg.itemid=gi.id AND gg.userid={$userid} AND (gg.rawgrade) is not null";
 
-        $datas = $DB->get_records_sql($sql, null, 0, $datalimit);
+        $records = $DB->get_records_sql($sql, null, 0, $datalimit);
 
         $series = [];
         $labels = [];
 
-        foreach ($datas as $data) {
+        foreach ($records as $data) {
             $series[] = $data->grade;
         }
 
         $sql = "SELECT itemname FROM {grade_items} where courseid={$courseid} and itemname is not null";
 
-        $datas = $DB->get_records_sql($sql, null, 0, $datalimit);
+        $records = $DB->get_records_sql($sql, null, 0, $datalimit);
 
-        foreach ($datas as $data) {
+        foreach ($records as $data) {
             $labels[] = $data->itemname;
         }
         while (count($series) < count($labels)) {
@@ -242,6 +285,14 @@ order by date(from_unixtime(lg.timecreated)) desc';
         return $this->display_graph($series, $labels, 'Earned grades', $coursename->fullname);
     }
 
+    /**
+     * Display graph.
+     * @param  float[] $seriesvalue
+     * @param string $labels
+     * @param string $title
+     * @param string $labelx
+     * @return mixed
+     */
     public function display_graph($seriesvalue, $labels, $title, $labelx) {
         global $OUTPUT, $CFG;
 
