@@ -30,9 +30,9 @@ class block_dashboardchart_edit_form extends block_edit_form {
      * @return void
      */
     protected function specific_definition($mform) {
-        global $DB, $USER, $PAGE;
+        global $DB, $USER;
 
-        $PAGE->requires->js_call_amd('block_dashboardchart/configure_block', 'init', array());
+        $this->page->requires->js_call_amd('block_dashboardchart/configure_block', 'init', array());
         // Section header title according to language file.
         $mform->addElement('header', 'config_header', get_string('blocksettings', 'block'));
 
