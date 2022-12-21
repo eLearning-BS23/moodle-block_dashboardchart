@@ -24,8 +24,6 @@
 
 namespace block_dashboardchart\privacy;
 
-
-
 use \core_privacy\local\request\userlist;
 use \core_privacy\local\request\approved_contextlist;
 use \core_privacy\local\request\approved_userlist;
@@ -74,12 +72,11 @@ class provider implements
         $contextlist = new \core_privacy\local\request\contextlist();
 
         $sql = "SELECT c.id
-                  FROM {block_instances} b
-            INNER JOIN {context} c ON c.instanceid = b.id AND c.contextlevel = :contextblock
-            INNER JOIN {context} bpc ON bpc.id = b.parentcontextid
-                 WHERE b.blockname = 'dashboardchart'
-                   AND bpc.contextlevel = :contextuser
-                   AND bpc.instanceid = :userid";
+                FROM {block_instances} b
+                INNER JOIN {context} c ON c.instanceid = b.id AND c.contextlevel = :contextblock
+                INNER JOIN {context} bpc ON bpc.id = b.parentcontextid
+                WHERE b.blockname = 'dashboardchart' AND bpc.contextlevel = :contextuser
+                AND bpc.instanceid = :userid";
 
         $params = [
             'contextblock' => CONTEXT_BLOCK,
@@ -107,11 +104,10 @@ class provider implements
         }
 
         $sql = "SELECT bpc.instanceid AS userid
-                  FROM {block_instances} bi
-                  JOIN {context} bpc ON bpc.id = bi.parentcontextid
-                 WHERE bi.blockname = 'dashboardchart'
-                   AND bpc.contextlevel = :contextuser
-                   AND bi.id = :blockinstanceid";
+                FROM {block_instances} bi
+                JOIN {context} bpc ON bpc.id = bi.parentcontextid
+                WHERE bi.blockname = 'dashboardchart' AND bpc.contextlevel = :contextuser
+                AND bi.id = :blockinstanceid";
 
         $params = [
             'contextuser' => CONTEXT_USER,
@@ -133,16 +129,10 @@ class provider implements
 
         list($contextsql, $contextparams) = $DB->get_in_or_equal($contextlist->get_contextids(), SQL_PARAMS_NAMED);
 
-        $sql = "SELECT
-                    c.id AS contextid,
-                    bi.*
-                  FROM {context} c
-            INNER JOIN {block_instances} bi ON bi.id = c.instanceid AND c.contextlevel = :contextlevel
-                 WHERE bi.blockname = 'dashboardchart'
-                   AND(
-                    c.id {$contextsql}
-                )
-        ";
+        $sql = "SELECT c.id AS contextid, bi.*
+                FROM {context} c
+                INNER JOIN {block_instances} bi ON bi.id = c.instanceid AND c.contextlevel = :contextlevel
+                WHERE bi.blockname = 'dashboardchart' AND(c.id {$contextsql})";
 
         $params = [
             'contextlevel' => CONTEXT_BLOCK,
@@ -184,7 +174,8 @@ class provider implements
     /**
      * Delete all data for all users in the specified context.
      *
-     * @param   context                 $context   The specific context to delete data for.
+     * @param context $context
+     *
      */
     public static function delete_data_for_all_users_in_context(\context $context) {
 
@@ -201,7 +192,7 @@ class provider implements
     /**
      * Delete multiple users within a single context.
      *
-     * @param   approved_userlist       $userlist The approved context and user information to delete information for.
+     * @param approved_userlist $userlist
      */
     public static function delete_data_for_users(approved_userlist $userlist) {
         $context = $userlist->get_context();
@@ -214,7 +205,7 @@ class provider implements
     /**
      * Delete all user data for the specified user, in the specified contexts.
      *
-     * @param   approved_contextlist    $contextlist    The approved contexts and user information to delete information for.
+     * @param approved_contextlist $contextlist The approved contexts and user information to delete information for.
      */
     public static function delete_data_for_user(approved_contextlist $contextlist) {
         // The only way to delete data for the dashboardchart block is to delete the block instance itself.

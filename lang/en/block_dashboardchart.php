@@ -57,3 +57,9 @@ $string['pie'] = 'Pie Chart';
 $string['line'] = 'Line Chart';
 $string['vertical'] = 'Vertical Bar';
 $string['graphtype'] = 'Select preferred Graph type:';
+
+$string['color'] = 'Color of the bar';
+$string['color_desc'] = 'Choose the color of chart';
+$string['defaultcolor'] = '#0f6cbf';
+
+
