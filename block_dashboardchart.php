@@ -22,11 +22,14 @@
  * @author     Brainstation23
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-
 class block_dashboardchart extends block_base {
 
-    function has_config() {
+    /**
+     * Allow the block to have a configuration page
+     *
+     * @return boolean
+     */
+    public function has_config() {
         return true;
     }
 

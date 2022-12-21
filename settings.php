@@ -25,18 +25,14 @@
 defined('MOODLE_INTERNAL') || die;
 
 if ($ADMIN->fulltree) {
-//    require_once($CFG->dirroot . '/blocks/dashboardchart/lib.php');
-
     // Presentation options heading.
     $settings->add(new admin_setting_heading('block_dashboardchart/appearance',
         get_string('appearance', 'admin'),
         ''));
-
 
     $name = 'block_dashboardchart/barcolor';
     $title = get_string('color', 'block_dashboardchart');
     $description = get_string('color_desc', 'block_dashboardchart');
 
     $settings->add(new admin_setting_configcolourpicker($name, $title, $description, ''));
-
 }

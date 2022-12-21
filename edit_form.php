@@ -29,8 +29,7 @@ class block_dashboardchart_edit_form extends block_edit_form {
      * @param StdClass $mform moodle form stdClass objects
      * @return void
      */
-    protected function specific_definition($mform)
-    {
+    protected function specific_definition($mform) {
         global $DB, $USER;
 
         $this->page->requires->js_call_amd('block_dashboardchart/configure_block', 'init', array());
