@@ -29,7 +29,8 @@ class block_dashboardchart_edit_form extends block_edit_form {
      * @param StdClass $mform moodle form stdClass objects
      * @return void
      */
-    protected function specific_definition($mform) {
+    protected function specific_definition($mform)
+    {
         global $DB, $USER;
 
         $this->page->requires->js_call_amd('block_dashboardchart/configure_block', 'init', array());
@@ -39,7 +40,7 @@ class block_dashboardchart_edit_form extends block_edit_form {
         // A sample string variable with a default value.
         $mform->addElement('text', 'config_msg', get_string('blockstring', 'block_dashboardchart'));
         $mform->setDefault('config_msg', get_string('pluginname', 'block_dashboardchart'));
-        $mform->setType('config_msg', PARAM_RAW);
+        $mform->setType('config_msg', PARAM_TEXT);
 
         // Graph tyoe.
         $graphposition = array();
@@ -49,7 +50,6 @@ class block_dashboardchart_edit_form extends block_edit_form {
         $graphposition['line'] = get_string('line', 'block_dashboardchart');
         $mform->addElement('select', 'config_graphtype', get_string('graphtype', 'block_dashboardchart'), $graphposition);
         $mform->setDefault('config_graphtype', 'vertical');
-        // A sample string variable with a default value.
 
         $dashboardcharttype = array();
         $dashboardcharttype[""] = get_string('dashboardcharttype:select', 'block_dashboardchart');
@@ -94,5 +94,6 @@ class block_dashboardchart_edit_form extends block_edit_form {
             $datalimitoptions
         );
         $mform->setDefault('config_datalimit', 5);
+
     }
 }

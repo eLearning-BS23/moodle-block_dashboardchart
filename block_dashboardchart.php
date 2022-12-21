@@ -23,7 +23,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+
 class block_dashboardchart extends block_base {
+
+    function has_config() {
+        return true;
+    }
+
+
     /**
      * init function for plugin name
      * @return void
@@ -296,10 +303,12 @@ class block_dashboardchart extends block_base {
     public function display_graph($seriesvalue, $labels, $title, $labelx) {
         global $OUTPUT, $CFG;
 
+        $config = get_config('block_dashboardchart');
+
         $chart = new \core\chart_bar();
         $series = new \core\chart_series($title, $seriesvalue);
 
-        $chartcolour = '#0f6cbf';
+        $chartcolour = $config->barcolor;
         if (isset($this->config->graphtype)) {
             if ($this->config->graphtype == 'horizontal') {
                 $chart->set_horizontal(true);

@@ -15,18 +15,28 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details
+ * Settings for the dashboardchart block
  *
  * @package    block_dashboardchart
- * @copyright  2021 Brain Station 23
- * @author     Brainstation23
+ * @copyright  2019 Tom Dickman <tomdickman@catalyst-au.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+defined('MOODLE_INTERNAL') || die;
 
-$plugin->version = 2022020103;        // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires = 2020061509;        // Requires this Moodle version.
-$plugin->release = '1.0.1';
-$plugin->component = 'block_dashboardchart';      // Full name of the plugin (used for diagnostics).
-$plugin->maturity = MATURITY_STABLE;
+if ($ADMIN->fulltree) {
+//    require_once($CFG->dirroot . '/blocks/dashboardchart/lib.php');
+
+    // Presentation options heading.
+    $settings->add(new admin_setting_heading('block_dashboardchart/appearance',
+        get_string('appearance', 'admin'),
+        ''));
+
+
+    $name = 'block_dashboardchart/barcolor';
+    $title = get_string('color', 'block_dashboardchart');
+    $description = get_string('color_desc', 'block_dashboardchart');
+
+    $settings->add(new admin_setting_configcolourpicker($name, $title, $description, ''));
+
+}
