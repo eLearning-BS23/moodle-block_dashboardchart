@@ -18,7 +18,7 @@
  * Settings for the dashboardchart block
  *
  * @package    block_dashboardchart
- * @copyright  2019 Tom Dickman <tomdickman@catalyst-au.net>
+ * @copyright  2022 Brain Station 23 Ltd.
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 

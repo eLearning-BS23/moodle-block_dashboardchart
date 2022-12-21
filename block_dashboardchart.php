@@ -18,7 +18,7 @@
  * Form for editing HTML block instances.
  *
  * @package    block_dashboardchart
- * @copyright  2021 Brain Station 23
+ * @copyright  2022 Brain Station 23 Ltd.
  * @author     Brainstation23
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
