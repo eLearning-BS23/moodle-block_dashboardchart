@@ -18,7 +18,7 @@
  * Privacy Subsystem implementation for block_dashboardchart.
  *
  * @package    block_dashboardchart
- * @copyright  2018 Andrew Nicols <andrew@nicols.co.uk>
+ * @copyright  2022 Brain Station 23 Ltd.
  * @license    http://www.gnu.org/copyleft/gpl.dashboardchart GNU GPL v3 or later
  */
 
@@ -63,8 +63,8 @@ class provider implements
     /**
      * Get the list of contexts that contain user information for the specified user.
      *
-     * @param   int         $userid     The user to search.
-     * @return  contextlist   $contextlist  The contextlist containing the list of contexts used in this plugin.
+     * @param int  $userid The user to search.
+     * @return contextlist $contextlist  The contextlist containing the list of contexts used in this plugin.
      */
     public static function get_contexts_for_userid(int $userid) : \core_privacy\local\request\contextlist {
         // This block doesn't know who information is stored against unless it
