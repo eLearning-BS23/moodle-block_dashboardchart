@@ -19,7 +19,7 @@
  *
  * @package    block_dashboardchart
  * @copyright  2022 Brain Station 23 Ltd.
- * @author     Brainstation23
+ * @author     Brain Station 23 Ltd.
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class block_dashboardchart extends block_base {
@@ -201,7 +201,7 @@ class block_dashboardchart extends block_base {
     }
 
     /**
-     *  Getting category wise course table
+     * Getting category wise course table
      * @param int $datalimit
      * @return mixed
      * @throws dml_exception
@@ -303,7 +303,9 @@ class block_dashboardchart extends block_base {
         $sql = "SELECT fullname FROM {course} where id={$courseid}";
         $coursename = $DB->get_record_sql($sql, null, 0, $datalimit);
 
-        return $this->display_graph($series, $labels,  get_string('earnedgrades', 'block_dashboardchart'), $coursename->fullname);
+        return $this->display_graph($series, $labels,
+            get_string('earnedgrades', 'block_dashboardchart'),
+            $coursename->fullname);
     }
 
     /**

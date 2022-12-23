@@ -18,7 +18,7 @@
  *
  * @package    block_dashboardchart
  * @copyright  2022 Brain Station 23 Ltd.
- * @author     Brainstation23
+ * @author     Brain Station 23 Ltd.
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
