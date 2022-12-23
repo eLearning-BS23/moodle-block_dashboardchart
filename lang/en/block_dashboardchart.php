@@ -33,7 +33,7 @@ $string['courseno'] = 'No of courses';
 $string['categoryname'] = 'Category name';
 
 $string['date'] = 'Date';
-$string['defaultcolor'] = '#0f6cbf';
+$string['defaultcolor'] = 'DodgerBlue';
 $string['dashboardchart'] = 'Dashboard Chart';
 
 $string['dashboardchart:myaddinstance'] = 'Add a new chart to Dashboard';

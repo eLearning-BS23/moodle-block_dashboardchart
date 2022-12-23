@@ -152,8 +152,9 @@ class block_dashboardchart extends block_base {
                 FROM {logstore_standard_log} l, {user} u,
 			         {role_assignments} r, {course} c, {context} ct
                 WHERE  l.userid = u.id AND r.roleid=5
-                     AND r.userid = u.id AND c.id = l.courseid
+                    AND r.userid = u.id AND c.id = l.courseid
                     AND ct.contextlevel=50 AND l.courseid=ct.instanceid
+                    AND c.id != 1
                 GROUP BY c.shortname
                 ORDER BY count(l.userid) desc';
 
@@ -324,7 +325,12 @@ class block_dashboardchart extends block_base {
         $chart = new \core\chart_bar();
         $series = new \core\chart_series($title, $seriesvalue);
 
-        $chartcolour = $config->barcolor;
+        if ($config->barcolor == '') {
+            $chartcolour  = '#2385E5';
+        } else {
+            $chartcolour = $config->barcolor;
+        }
+
         if (isset($this->config->graphtype)) {
             if ($this->config->graphtype == 'horizontal') {
                 $chart->set_horizontal(true);
