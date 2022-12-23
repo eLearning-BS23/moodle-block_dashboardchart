@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Privacy Subsystem implementation for block_dashboardchart.
+ * Privacy Subsystem implementation for dashboardchart plugin.
  *
  * @package    block_dashboardchart
  * @copyright  2022 Brain Station 23 Ltd.
@@ -35,7 +35,7 @@ use \core_privacy\local\metadata\collection;
 /**
  * Privacy Subsystem implementation for block_dashboardchart.
  *
- * @copyright  2018 Andrew Nicols <andrew@nicols.co.uk>
+ * @copyright  2022 Brain Station 23 Ltd.
  * @license    http://www.gnu.org/copyleft/gpl.dashboardchart GNU GPL v3 or later
  */
 class provider implements
@@ -92,7 +92,7 @@ class provider implements
     /**
      * Get the list of users who have data within a context.
      *
-     * @param   userlist    $userlist   The userlist containing the list of users who have data in this context/plugin combination.
+     * @param userlist $userlist The userlist containing the list of users who have data in this context/plugin combination.
      */
     public static function get_users_in_context(userlist $userlist) {
         // This block doesn't know who information is stored against unless it
@@ -120,7 +120,7 @@ class provider implements
     /**
      * Export all user data for the specified user, in the specified contexts.
      *
-     * @param   approved_contextlist    $contextlist    The approved contexts to export information for.
+     * @param approved_contextlist $contextlist The approved contexts to export information for.
      */
     public static function export_user_data(approved_contextlist $contextlist) {
         global $DB;
@@ -223,8 +223,8 @@ class provider implements
     /**
      * Get the block instance record for the specified context.
      *
-     * @param   \context_block $context The context to fetch
-     * @return  \stdClass
+     * @param \context_block $context The context to fetch
+     * @return \stdClass
      */
     protected static function get_instance_from_context(\context_block $context) {
         global $DB;

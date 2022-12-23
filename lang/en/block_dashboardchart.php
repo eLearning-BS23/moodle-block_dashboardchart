@@ -61,5 +61,15 @@ $string['graphtype'] = 'Select preferred Graph type:';
 $string['color'] = 'Color of the bar';
 $string['color_desc'] = 'Choose the color of chart';
 $string['defaultcolor'] = '#0f6cbf';
+$string['country_title'] = 'Student Enrolled by contries';
+$string['country_desc'] = 'Country name';
+$string['mostactive'] = 'Most active course';
+$string['mostactive_desc'] = 'Course Name';
+$string['logins'] = 'Users Login';
+$string['date'] = 'Date';
+$string['courseno'] = 'No of courses';
+$string['categoryname'] = 'Category name';
+$string['studentpercourse'] = 'Student per course';
+$string['earnedgrades'] = 'Earned Grades';
 
 
