@@ -19,7 +19,7 @@
  *
  * @package    block_dashboardchart
  * @copyright  2022 Brain Station 23 Ltd.
- * @author     Brainstation23
+ * @author     Brain Station 23 Ltd.
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class block_dashboardchart extends block_base {
@@ -135,7 +135,9 @@ class block_dashboardchart extends block_base {
             $labels[] = get_string($row->country, 'countries');
         }
 
-        return $this->display_graph($series, $labels, 'Student Enrolled by contries', 'Country name');
+        return $this->display_graph($series, $labels,
+            get_string('country_title', 'block_dashboardchart'),
+            get_string('country_desc', 'block_dashboardchart'));
     }
 
     /**
@@ -146,12 +148,14 @@ class block_dashboardchart extends block_base {
      */
     public function make_most_active_courses_table($datalimit) {
         global $DB;
-        $sql = 'SELECT c.fullname,count(l.userid) AS Views
-                FROM {logstore_standard_log} l, {user} u, {role_assignments} r, {course} c, {context} ct
-                WHERE l.courseid=6 AND l.userid = u.id
-                AND r.roleid=5 AND r.userid = u.id
-                AND ct.contextlevel=50 AND l.courseid=ct.instanceid
-                GROUP BY c.fullname
+        $sql = 'SELECT c.shortname, count(l.userid) AS views
+                FROM {logstore_standard_log} l, {user} u,
+			         {role_assignments} r, {course} c, {context} ct
+                WHERE  l.userid = u.id AND r.roleid=5
+                    AND r.userid = u.id AND c.id = l.courseid
+                    AND ct.contextlevel=50 AND l.courseid=ct.instanceid
+                    AND c.id != 1
+                GROUP BY c.shortname
                 ORDER BY count(l.userid) desc';
 
         $records = $DB->get_records_sql($sql, null, 0, $datalimit);
@@ -161,10 +165,12 @@ class block_dashboardchart extends block_base {
 
         foreach ($records as $data) {
             $series[] = $data->views;
-            $labels[] = $data->fullname;
+            $labels[] = $data->shortname;
         }
 
-        return $this->display_graph($series, $labels, 'Most active course', 'Course name');
+        return $this->display_graph($series, $labels,
+            get_string('mostactive', 'block_dashboardchart'),
+            get_string('mostactive_desc', 'block_dashboardchart'));
     }
 
     /**
@@ -190,11 +196,13 @@ class block_dashboardchart extends block_base {
             $labels[] = $data->date;
         }
 
-        return $this->display_graph($series, $labels, 'users log ins', 'Date');
+        return $this->display_graph($series, $labels,
+            get_string('logins', 'block_dashboardchart'),
+            get_string('date', 'block_dashboardchart'));
     }
 
     /**
-     *  Getting category wise course table
+     * Getting category wise course table
      * @param int $datalimit
      * @return mixed
      * @throws dml_exception
@@ -215,7 +223,9 @@ class block_dashboardchart extends block_base {
             $labels[] = $data->name;
         }
 
-        return $this->display_graph($series, $labels, 'No of courses', 'Category name');
+        return $this->display_graph($series, $labels,
+            get_string('courseno', 'block_dashboardchart'),
+            get_string('categoryname', 'block_dashboardchart'));
     }
 
     /**
@@ -247,7 +257,9 @@ class block_dashboardchart extends block_base {
             $labels[] = $data->course;
         }
 
-        return $this->display_graph($series, $labels, 'Student per course', 'Course name');
+        return $this->display_graph($series, $labels,
+            get_string('studentpercourse', 'block_dashboardchart'),
+            get_string('mostactive_desc', 'block_dashboardchart'));
     }
 
     /**
@@ -292,7 +304,9 @@ class block_dashboardchart extends block_base {
         $sql = "SELECT fullname FROM {course} where id={$courseid}";
         $coursename = $DB->get_record_sql($sql, null, 0, $datalimit);
 
-        return $this->display_graph($series, $labels, 'Earned grades', $coursename->fullname);
+        return $this->display_graph($series, $labels,
+            get_string('earnedgrades', 'block_dashboardchart'),
+            $coursename->fullname);
     }
 
     /**
@@ -311,7 +325,12 @@ class block_dashboardchart extends block_base {
         $chart = new \core\chart_bar();
         $series = new \core\chart_series($title, $seriesvalue);
 
-        $chartcolour = $config->barcolor;
+        if ($config->barcolor == '') {
+            $chartcolour  = '#2385E5';
+        } else {
+            $chartcolour = $config->barcolor;
+        }
+
         if (isset($this->config->graphtype)) {
             if ($this->config->graphtype == 'horizontal') {
                 $chart->set_horizontal(true);

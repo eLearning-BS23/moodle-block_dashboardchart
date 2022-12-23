@@ -19,24 +19,31 @@
  *
  * @package    block_dashboardchart
  * @copyright  2022 Brain Station 23 Ltd.
- * @author     Brainstation23
+ * @author     Brain Station 23 Ltd.
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Dashboard Chart';
-$string['dashboardchart'] = 'Dashboard Chart';
 $string['blockstring'] = 'Heading message:';
 $string['config:courseselect'] = 'Select Course Id';
+$string['color'] = 'Color of the bar';
+$string['color_desc'] = 'Choose the color of chart';
+$string['country_title'] = 'Student Enrolled by contries';
+$string['country_desc'] = 'Country name';
+$string['courseno'] = 'No of courses';
+$string['categoryname'] = 'Category name';
+
+$string['date'] = 'Date';
+$string['defaultcolor'] = 'DodgerBlue';
+$string['dashboardchart'] = 'Dashboard Chart';
+
 $string['dashboardchart:myaddinstance'] = 'Add a new chart to Dashboard';
 $string['dashboardchart:addinstance'] = 'Add a new chart';
-
 
 $string['datalimitlabel'] = 'Datalimit';
 $string['datalimitoption:top5'] = 'Top 5';
 $string['datalimitoption:top10'] = 'Top 10';
 $string['datalimitoption:top20'] = 'Top 20';
 $string['datalimitoption:all'] = 'All';
-
 
 $string['dashboardcharttype'] = 'Choose Chart Value';
 $string['dashboardcharttype:select'] = 'Select';
@@ -49,17 +56,20 @@ $string['dashboardcharttype:grades'] = 'Show grade';
 $string['dashboardcharttype:active_courses'] = 'Most Active courses';
 $string['dashboardcharttype:learner_teacher'] = 'Learners and teachers enrolled per category';
 
-
-$string['leaderboardtypewarning'] = 'Something wrong';
-
-$string['horizontal'] = 'Horizontal Bar';
-$string['pie'] = 'Pie Chart';
-$string['line'] = 'Line Chart';
-$string['vertical'] = 'Vertical Bar';
+$string['earnedgrades'] = 'Earned Grades';
 $string['graphtype'] = 'Select preferred Graph type:';
+$string['horizontal'] = 'Horizontal Bar';
+$string['leaderboardtypewarning'] = 'Something wrong';
+$string['line'] = 'Line Chart';
+$string['logins'] = 'Users Login';
+$string['mostactive'] = 'Most active course';
+$string['mostactive_desc'] = 'Course Name';
+$string['pie'] = 'Pie Chart';
+$string['pluginname'] = 'Dashboard Chart';
+$string['studentpercourse'] = 'Student per course';
+$string['vertical'] = 'Vertical Bar';
 
-$string['color'] = 'Color of the bar';
-$string['color_desc'] = 'Choose the color of chart';
-$string['defaultcolor'] = '#0f6cbf';
+
+
 
 
