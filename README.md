@@ -29,8 +29,17 @@ You can install this block plugin from [Moodle plugins directory](https://moodle
 
 You can download zip file and install or you can put file under Custom Block Dashboard Chart.
 
-The user can use the below configuration in screenshots to add this block plugin.
+## Plugin Global Settings
+### Go to
+Dashboard->Site administration->Plugins->blocks->dashboardchart settings
 
+![image](https://user-images.githubusercontent.com/40598386/209287565-3756c29a-8f76-4a25-a28c-ccbfd85af994.png)
+
+Color for the Horizontal Bar, Vertical Bar and Line chart can be chosen from the plugin settings.
+
+![Screenshot from 2022-12-23 12-09-19](https://user-images.githubusercontent.com/40598386/209281739-3fdc083d-43da-440c-899c-231131dacbaf.png)
+
+## Adding the Dashboard Chart Plugin
 ```
   Customize this page-> Add a block-> Add-> Dashboard Chart
 ```
