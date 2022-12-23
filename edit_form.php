@@ -54,7 +54,6 @@ class block_dashboardchart_edit_form extends block_edit_form {
         $dashboardcharttype[""] = get_string('dashboardcharttype:select', 'block_dashboardchart');
         $dashboardcharttype["coursewiseenrollment"] = get_string('dashboardcharttype:coursewiseenrollment', 'block_dashboardchart');
         $dashboardcharttype["category"] = get_string('dashboardcharttype:category', 'block_dashboardchart');
-        $dashboardcharttype["grades"] = get_string('dashboardcharttype:grades', 'block_dashboardchart');
         $dashboardcharttype["active_courses"] = get_string('dashboardcharttype:active_courses', 'block_dashboardchart');
         if (is_siteadmin($USER->id)) {
             $dashboardcharttype["login"] = get_string('dashboardcharttype:login', 'block_dashboardchart');
