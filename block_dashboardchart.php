@@ -135,7 +135,9 @@ class block_dashboardchart extends block_base {
             $labels[] = get_string($row->country, 'countries');
         }
 
-        return $this->display_graph($series, $labels,  get_string('country_title', 'block_dashboardchart'),  get_string('country_desc', 'block_dashboardchart'));
+        return $this->display_graph($series, $labels,
+            get_string('country_title', 'block_dashboardchart'),
+            get_string('country_desc', 'block_dashboardchart'));
     }
 
     /**
@@ -144,15 +146,14 @@ class block_dashboardchart extends block_base {
      * @return mixed
      * @throws dml_exception
      */
-
     public function make_most_active_courses_table($datalimit) {
         global $DB;
         $sql = 'SELECT c.shortname, count(l.userid) AS views
-                FROM {logstore_standard_log} l, {user} u, 
+                FROM {logstore_standard_log} l, {user} u,
 			         {role_assignments} r, {course} c, {context} ct
-                WHERE  l.userid = u.id AND r.roleid=5 
+                WHERE  l.userid = u.id AND r.roleid=5
                      AND r.userid = u.id AND c.id = l.courseid
-                     AND ct.contextlevel=50 AND l.courseid=ct.instanceid
+                    AND ct.contextlevel=50 AND l.courseid=ct.instanceid
                 GROUP BY c.shortname
                 ORDER BY count(l.userid) desc';
 
@@ -166,7 +167,9 @@ class block_dashboardchart extends block_base {
             $labels[] = $data->shortname;
         }
 
-        return $this->display_graph($series, $labels, get_string('mostactive', 'block_dashboardchart'), get_string('mostactive_desc', 'block_dashboardchart'));
+        return $this->display_graph($series, $labels,
+            get_string('mostactive', 'block_dashboardchart'),
+            get_string('mostactive_desc', 'block_dashboardchart'));
     }
 
     /**
@@ -192,7 +195,9 @@ class block_dashboardchart extends block_base {
             $labels[] = $data->date;
         }
 
-        return $this->display_graph($series, $labels, get_string('logins', 'block_dashboardchart'), get_string('date', 'block_dashboardchart'));
+        return $this->display_graph($series, $labels,
+            get_string('logins', 'block_dashboardchart'),
+            get_string('date', 'block_dashboardchart'));
     }
 
     /**
@@ -217,7 +222,9 @@ class block_dashboardchart extends block_base {
             $labels[] = $data->name;
         }
 
-        return $this->display_graph($series, $labels, get_string('courseno', 'block_dashboardchart'),  get_string('categoryname', 'block_dashboardchart'));
+        return $this->display_graph($series, $labels,
+            get_string('courseno', 'block_dashboardchart'),
+            get_string('categoryname', 'block_dashboardchart'));
     }
 
     /**
@@ -249,7 +256,9 @@ class block_dashboardchart extends block_base {
             $labels[] = $data->course;
         }
 
-        return $this->display_graph($series, $labels, get_string('studentpercourse', 'block_dashboardchart'), get_string('mostactive_desc', 'block_dashboardchart'));
+        return $this->display_graph($series, $labels,
+            get_string('studentpercourse', 'block_dashboardchart'),
+            get_string('mostactive_desc', 'block_dashboardchart'));
     }
 
     /**
