@@ -30,13 +30,6 @@ export const init = () => {
    */
   function mangeCourseInputField() {
     var dbcharttype = $("#id_config_dashboardcharttype :selected").val();
-    if (dbcharttype == "grades") {
-      document.getElementById("courseleaderboard_configs").style.display =
-        "block";
-    } else {
-      document.getElementById("courseleaderboard_configs").style.display =
-        "none";
-    }
   }
   mangeCourseInputField();
 

@@ -52,12 +52,11 @@ $string['dashboardcharttype:enrollment'] = 'Enrollment by Country';
 $string['dashboardcharttype:discussionpost'] = 'Forum Discussion Leaderboard';
 $string['dashboardcharttype:category'] = 'Courses in category';
 $string['dashboardcharttype:login'] = 'Logins per day';
-$string['dashboardcharttype:grades'] = 'Show grade';
 $string['dashboardcharttype:active_courses'] = 'Most Active courses';
 $string['dashboardcharttype:learner_teacher'] = 'Learners and teachers enrolled per category';
 
-$string['earnedgrades'] = 'Earned Grades';
 $string['graphtype'] = 'Select preferred Graph type:';
+$string['gradedata'] = 'select a course to show grade data';
 $string['horizontal'] = 'Horizontal Bar';
 $string['leaderboardtypewarning'] = 'Something wrong';
 $string['line'] = 'Line Chart';

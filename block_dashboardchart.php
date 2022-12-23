@@ -100,8 +100,6 @@ class block_dashboardchart extends block_base {
                 $dashboardtype = $this->make_category_course_table($datalimit);
             } else if ($this->config->dashboardcharttype == 'login') {
                 $dashboardtype = $this->make_login_table($datalimit);
-            } else if ($this->config->dashboardcharttype == 'grades') {
-                $dashboardtype = $this->make_course_grade_table($datalimit);
             } else if ($this->config->dashboardcharttype == 'active_courses') {
                 $dashboardtype = $this->make_most_active_courses_table($datalimit);
             } else {
@@ -260,53 +258,6 @@ class block_dashboardchart extends block_base {
         return $this->display_graph($series, $labels,
             get_string('studentpercourse', 'block_dashboardchart'),
             get_string('mostactive_desc', 'block_dashboardchart'));
-    }
-
-    /**
-     * Getting data within a limit
-     * @param int $datalimit
-     * @return string
-     * @throws dml_exception
-     */
-    public function make_course_grade_table($datalimit) {
-        global $DB, $USER;
-
-        $courseid = $this->config->courseid;
-        if ($courseid == null) {
-            return 'select a course to show grade data';
-        }
-        $userid = $USER->id;
-        $sql = "SELECT round(gg.rawgrade,2) as grade, gi.itemname
-                FROM {grade_grades} as gg
-                JOIN {grade_items} as gi on gi.courseid={$courseid}
-                WHERE gg.itemid=gi.id AND gg.userid={$userid} AND (gg.rawgrade) is not null";
-
-        $records = $DB->get_records_sql($sql, null, 0, $datalimit);
-
-        $series = [];
-        $labels = [];
-
-        foreach ($records as $data) {
-            $series[] = $data->grade;
-        }
-
-        $sql = "SELECT itemname FROM {grade_items} where courseid={$courseid} and itemname is not null";
-
-        $records = $DB->get_records_sql($sql, null, 0, $datalimit);
-
-        foreach ($records as $data) {
-            $labels[] = $data->itemname;
-        }
-        while (count($series) < count($labels)) {
-            $series[] = 0;
-        }
-
-        $sql = "SELECT fullname FROM {course} where id={$courseid}";
-        $coursename = $DB->get_record_sql($sql, null, 0, $datalimit);
-
-        return $this->display_graph($series, $labels,
-            get_string('earnedgrades', 'block_dashboardchart'),
-            $coursename->fullname);
     }
 
     /**
